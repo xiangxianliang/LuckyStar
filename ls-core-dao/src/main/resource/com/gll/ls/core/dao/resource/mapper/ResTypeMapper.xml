@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.resource.mapper.ResTypeMapper">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.resource.po.ResType">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="type_name_pc" property="typeNamePc" jdbcType="VARCHAR" />
+		<result column="type_description" property="typeDescription" jdbcType="VARCHAR" />
+		<result column="type_remark" property="typeRemark" jdbcType="VARCHAR" />
+		<result column="type_icon" property="typeIcon" jdbcType="VARCHAR" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="is_seaf" property="isSeaf" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="is_select" property="isSelect" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		type_id, type_name, type_name_pc, type_description, type_remark, type_icon, showorder,
+		is_seaf, parent_id, is_select, is_display, is_enable,
+		is_activation, is_del
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gll.ls.core.pojo.resource.po.ResTypeExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from res_type
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from res_type
+		where type_id = #{typeId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from res_type
+		where type_id = #{typeId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.gll.ls.core.pojo.resource.po.ResTypeExample">
+		delete from res_type
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.gll.ls.core.pojo.resource.po.ResType">
+		insert into res_type (type_id, type_name, type_name_pc,
+		type_description, type_remark, type_icon,
+		showorder, is_seaf,
+		parent_id,
+		is_select, is_display, is_enable,
+		is_activation, is_del)
+		values (#{typeId,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR},
+		#{typeNamePc,jdbcType=VARCHAR},
+		#{typeDescription,jdbcType=VARCHAR}, #{typeRemark,jdbcType=VARCHAR}, #{typeIcon,jdbcType=VARCHAR},
+		#{showorder,jdbcType=INTEGER}, #{isSeaf,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER},
+		#{isSelect,jdbcType=INTEGER}, #{isDisplay,jdbcType=INTEGER},
+		#{isEnable,jdbcType=INTEGER},
+		#{isActivation,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.gll.ls.core.pojo.resource.po.ResType">
+		insert into res_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="typeName != null">
+				type_name,
+			</if>
+			<if test="typeNamePc != null">
+				type_name_pc,
+			</if>
+			<if test="typeDescription != null">
+				type_description,
+			</if>
+			<if test="typeRemark != null">
+				type_remark,
+			</if>
+			<if test="typeIcon != null">
+				type_icon,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="isSeaf != null">
+				is_seaf,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="isSelect != null">
+				is_select,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				#{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="typeName != null">
+				#{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeNamePc != null">
+				#{typeNamePc,jdbcType=VARCHAR},
+			</if>
+			<if test="typeDescription != null">
+				#{typeDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="typeRemark != null">
+				#{typeRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="typeIcon != null">
+				#{typeIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="showorder != null">
+				#{showorder,jdbcType=INTEGER},
+			</if>
+			<if test="isSeaf != null">
+				#{isSeaf,jdbcType=INTEGER},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="isSelect != null">
+				#{isSelect,jdbcType=INTEGER},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay,jdbcType=INTEGER},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable,jdbcType=INTEGER},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.gll.ls.core.pojo.resource.po.ResTypeExample" resultType="java.lang.Integer">
+		select count(*) from res_type
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update res_type
+		<set>
+			<if test="record.typeId != null">
+				type_id = #{record.typeId,jdbcType=INTEGER},
+			</if>
+			<if test="record.typeName != null">
+				type_name = #{record.typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.typeNamePc != null">
+				type_name_pc = #{record.typeNamePc,jdbcType=VARCHAR},
+			</if>
+			<if test="record.typeDescription != null">
+				type_description = #{record.typeDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="record.typeRemark != null">
+				type_remark = #{record.typeRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.typeIcon != null">
+				type_icon = #{record.typeIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="record.showorder != null">
+				showorder = #{record.showorder,jdbcType=INTEGER},
+			</if>
+			<if test="record.isSeaf != null">
+				is_seaf = #{record.isSeaf,jdbcType=INTEGER},
+			</if>
+			<if test="record.parentId != null">
+				parent_id = #{record.parentId,jdbcType=INTEGER},
+			</if>
+			<if test="record.isSelect != null">
+				is_select = #{record.isSelect,jdbcType=INTEGER},
+			</if>
+			<if test="record.isDisplay != null">
+				is_display = #{record.isDisplay,jdbcType=INTEGER},
+			</if>
+			<if test="record.isEnable != null">
+				is_enable = #{record.isEnable,jdbcType=INTEGER},
+			</if>
+			<if test="record.isActivation != null">
+				is_activation = #{record.isActivation,jdbcType=INTEGER},
+			</if>
+			<if test="record.isDel != null">
+				is_del = #{record.isDel,jdbcType=INTEGER},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update res_type
+		set type_id = #{record.typeId,jdbcType=INTEGER},
+		type_name = #{record.typeName,jdbcType=VARCHAR},
+		type_name_pc =
+		#{record.typeNamePc,jdbcType=VARCHAR},
+		type_description = #{record.typeDescription,jdbcType=VARCHAR},
+		type_remark = #{record.typeRemark,jdbcType=VARCHAR},
+		type_icon = #{record.typeIcon,jdbcType=VARCHAR},
+		showorder = #{record.showorder,jdbcType=INTEGER},
+		is_seaf = #{record.isSeaf,jdbcType=INTEGER},
+		parent_id =
+		#{record.parentId,jdbcType=INTEGER},
+		is_select = #{record.isSelect,jdbcType=INTEGER},
+		is_display = #{record.isDisplay,jdbcType=INTEGER},
+		is_enable =
+		#{record.isEnable,jdbcType=INTEGER},
+		is_activation = #{record.isActivation,jdbcType=INTEGER},
+		is_del = #{record.isDel,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.gll.ls.core.pojo.resource.po.ResType">
+		update res_type
+		<set>
+			<if test="typeName != null">
+				type_name = #{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeNamePc != null">
+				type_name_pc = #{typeNamePc,jdbcType=VARCHAR},
+			</if>
+			<if test="typeDescription != null">
+				type_description = #{typeDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="typeRemark != null">
+				type_remark = #{typeRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="typeIcon != null">
+				type_icon = #{typeIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="showorder != null">
+				showorder = #{showorder,jdbcType=INTEGER},
+			</if>
+			<if test="isSeaf != null">
+				is_seaf = #{isSeaf,jdbcType=INTEGER},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="isSelect != null">
+				is_select = #{isSelect,jdbcType=INTEGER},
+			</if>
+			<if test="isDisplay != null">
+				is_display = #{isDisplay,jdbcType=INTEGER},
+			</if>
+			<if test="isEnable != null">
+				is_enable = #{isEnable,jdbcType=INTEGER},
+			</if>
+			<if test="isActivation != null">
+				is_activation = #{isActivation,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				is_del = #{isDel,jdbcType=INTEGER},
+			</if>
+		</set>
+		where type_id = #{typeId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.gll.ls.core.pojo.resource.po.ResType">
+		update res_type
+		set type_name = #{typeName,jdbcType=VARCHAR},
+		type_name_pc = #{typeNamePc,jdbcType=VARCHAR},
+		type_description = #{typeDescription,jdbcType=VARCHAR},
+		type_remark = #{typeRemark,jdbcType=VARCHAR},
+		type_icon = #{typeIcon,jdbcType=VARCHAR},
+		showorder =
+		#{showorder,jdbcType=INTEGER},
+		is_seaf = #{isSeaf,jdbcType=INTEGER},
+		parent_id = #{parentId,jdbcType=INTEGER},
+		is_select = #{isSelect,jdbcType=INTEGER},
+		is_display = #{isDisplay,jdbcType=INTEGER},
+		is_enable = #{isEnable,jdbcType=INTEGER},
+		is_activation = #{isActivation,jdbcType=INTEGER},
+		is_del =
+		#{isDel,jdbcType=INTEGER}
+		where type_id = #{typeId,jdbcType=INTEGER}
+	</update>
+</mapper>

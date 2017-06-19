@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysModuleMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysModuleCustom">
+		<id column="module_id" property="moduleId" jdbcType="INTEGER" />
+		<result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+		<result column="module_description" property="moduleDescription" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="module_url" property="moduleUrl" jdbcType="VARCHAR" />
+		<result column="module_icon" property="moduleIcon" jdbcType="VARCHAR" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="is_seaf" property="isSeaf" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="moduleSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			module_id, module_name, module_description, parent_id, module_url, module_icon, showorder, is_seaf, is_display, is_enable, is_activation, is_del
+		</if>
+		from sys_module
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="moduleListWhere">
+		<where>
+			<if test="sysModuleCustom != null">
+				<if test="sysModuleCustom.moduleId != null">
+					and module_id = #{sysModuleCustom.moduleId}
+				</if>
+				<if test="sysModuleCustom.moduleName != null">
+					<if test="moduleNameLike == false">
+						and module_name = #{sysModuleCustom.moduleName}
+					</if>
+					<if test="moduleNameLike == true">
+						and module_name like "%"#{sysModuleCustom.moduleName}"%"
+					</if>
+				</if>
+				<if test="sysModuleCustom.moduleDescription != null">
+					<if test="moduleDescriptionLike == false">
+						and module_description = #{sysModuleCustom.moduleDescription}
+					</if>
+					<if test="moduleDescriptionLike == true">
+						and module_description like "%"#{sysModuleCustom.moduleDescription}"%"
+					</if>
+				</if>
+				<if test="sysModuleCustom.parentId != null">
+					and parent_id = #{sysModuleCustom.parentId}
+				</if>
+				<if test="sysModuleCustom.moduleUrl != null">
+					<if test="moduleUrlLike == false">
+						and module_url = #{sysModuleCustom.moduleUrl}
+					</if>
+					<if test="moduleUrlLike == true">
+						and module_url like "%"#{sysModuleCustom.moduleUrl}"%"
+					</if>
+				</if>
+				<if test="sysModuleCustom.moduleIcon != null">
+					<if test="moduleIconLike == false">
+						and module_icon = #{sysModuleCustom.moduleIcon}
+					</if>
+					<if test="moduleIconLike == true">
+						and module_icon like "%"#{sysModuleCustom.moduleIcon}"%"
+					</if>
+				</if>
+				<if test="sysModuleCustom.showorder != null">
+					and showorder = #{sysModuleCustom.showorder}
+				</if>
+				<if test="sysModuleCustom.isSeaf != null">
+					and is_seaf = #{sysModuleCustom.isSeaf}
+				</if>
+				<if test="sysModuleCustom.isDisplay != null">
+					and is_display = #{sysModuleCustom.isDisplay}
+				</if>
+				<if test="sysModuleCustom.isEnable != null">
+					and is_enable = #{sysModuleCustom.isEnable}
+				</if>
+				<if test="sysModuleCustom.isActivation != null">
+					and is_activation = #{sysModuleCustom.isActivation}
+				</if>
+				<if test="sysModuleCustom.isDel != null">
+					and is_del = #{sysModuleCustom.isDel}
+				</if>
+			</if>
+			<if test="moduleIdStart != null">
+				and module_id &gt;= #{moduleIdStart}
+			</if>
+			<if test="moduleIdEnd != null">
+				and module_id &lt; #{moduleIdEnd}
+			</if>
+			<if test="parentIdStart != null">
+				and parent_id &gt;= #{parentIdStart}
+			</if>
+			<if test="parentIdEnd != null">
+				and parent_id &lt; #{parentIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="moduleListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="moduleListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysModuleCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="moduleSelector" />
+		<include refid="moduleListWhere" />
+		<include refid="moduleListOrder" />
+		<include refid="moduleListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysModuleCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_module
+		<include refid="moduleListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysModuleCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="moduleSelector" />
+		<include refid="moduleListWhere" />
+		<include refid="moduleListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysModuleCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		module_id, module_name, module_description, parent_id, module_url,
+		module_icon, showorder, is_seaf, is_display, is_enable, is_activation, is_del
+		from sys_module
+		WHERE
+		module_id = #{moduleId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysModuleCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="moduleSelector" />
+		WHERE
+		module_id = #{sysModuleCustom.moduleId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysModuleCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		module_id, module_name, module_description, parent_id, module_url, module_icon, showorder, is_seaf, is_display, is_enable, is_activation, is_del
+		from
+		sys_module
+		WHERE
+		module_id in
+		<foreach collection="moduleIdList" separator="," item="moduleId" open="(" close=")">
+			#{moduleId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysModuleListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="moduleSelector" />
+		WHERE
+		module_id in
+		<foreach collection="moduleIdList" separator="," item="moduleId" open="(" close=")">
+			#{moduleId}
+		</foreach>
+		<include refid="moduleListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysModuleCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo" useGeneratedKeys="true" keyProperty="sysModuleCustom.moduleId">
+		INSERT INTO sys_module
+		<if test="sysModuleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysModuleCustom.moduleId != null">
+					module_id,
+				</if>
+				<if test="sysModuleCustom.moduleName != null">
+					module_name,
+				</if>
+				<if test="sysModuleCustom.moduleDescription != null">
+					module_description,
+				</if>
+				<if test="sysModuleCustom.parentId != null">
+					parent_id,
+				</if>
+				<if test="sysModuleCustom.moduleUrl != null">
+					module_url,
+				</if>
+				<if test="sysModuleCustom.moduleIcon != null">
+					module_icon,
+				</if>
+				<if test="sysModuleCustom.showorder != null">
+					showorder,
+				</if>
+				<if test="sysModuleCustom.isSeaf != null">
+					is_seaf,
+				</if>
+				<if test="sysModuleCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="sysModuleCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="sysModuleCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="sysModuleCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysModuleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysModuleCustom.moduleId != null">
+					#{sysModuleCustom.moduleId},
+				</if>
+				<if test="sysModuleCustom.moduleName != null">
+					#{sysModuleCustom.moduleName},
+				</if>
+				<if test="sysModuleCustom.moduleDescription != null">
+					#{sysModuleCustom.moduleDescription},
+				</if>
+				<if test="sysModuleCustom.parentId != null">
+					#{sysModuleCustom.parentId},
+				</if>
+				<if test="sysModuleCustom.moduleUrl != null">
+					#{sysModuleCustom.moduleUrl},
+				</if>
+				<if test="sysModuleCustom.moduleIcon != null">
+					#{sysModuleCustom.moduleIcon},
+				</if>
+				<if test="sysModuleCustom.showorder != null">
+					#{sysModuleCustom.showorder},
+				</if>
+				<if test="sysModuleCustom.isSeaf != null">
+					#{sysModuleCustom.isSeaf},
+				</if>
+				<if test="sysModuleCustom.isDisplay != null">
+					#{sysModuleCustom.isDisplay},
+				</if>
+				<if test="sysModuleCustom.isEnable != null">
+					#{sysModuleCustom.isEnable},
+				</if>
+				<if test="sysModuleCustom.isActivation != null">
+					#{sysModuleCustom.isActivation},
+				</if>
+				<if test="sysModuleCustom.isDel != null">
+					#{sysModuleCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysModuleCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleCustom" useGeneratedKeys="true" keyProperty="moduleId">
+		INSERT INTO sys_module
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="moduleId != null">
+				module_id,
+			</if>
+			<if test="moduleName != null">
+				module_name,
+			</if>
+			<if test="moduleDescription != null">
+				module_description,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="moduleUrl != null">
+				module_url,
+			</if>
+			<if test="moduleIcon != null">
+				module_icon,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="isSeaf != null">
+				is_seaf,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="moduleId != null">
+				#{moduleId},
+			</if>
+			<if test="moduleName != null">
+				#{moduleName},
+			</if>
+			<if test="moduleDescription != null">
+				#{moduleDescription},
+			</if>
+			<if test="parentId != null">
+				#{parentId},
+			</if>
+			<if test="moduleUrl != null">
+				#{moduleUrl},
+			</if>
+			<if test="moduleIcon != null">
+				#{moduleIcon},
+			</if>
+			<if test="showorder != null">
+				#{showorder},
+			</if>
+			<if test="isSeaf != null">
+				#{isSeaf},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysModuleCustomByKey" parameterType="Integer">
+		DELETE FROM sys_module
+		WHERE
+		module_id = #{moduleId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysModuleCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_module
+		WHERE
+		module_id in
+		<foreach collection="moduleIdList" separator="," item="moduleId" open="(" close=")">
+			#{moduleId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysModuleCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo">
+		UPDATE sys_module
+		<set>
+			<if test="sysModuleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysModuleCustom.moduleName != null">
+						module_name = #{sysModuleCustom.moduleName},
+					</if>
+					<if test="sysModuleCustom.moduleDescription != null">
+						module_description = #{sysModuleCustom.moduleDescription},
+					</if>
+					<if test="sysModuleCustom.parentId != null">
+						parent_id = #{sysModuleCustom.parentId},
+					</if>
+					<if test="sysModuleCustom.moduleUrl != null">
+						module_url = #{sysModuleCustom.moduleUrl},
+					</if>
+					<if test="sysModuleCustom.moduleIcon != null">
+						module_icon = #{sysModuleCustom.moduleIcon},
+					</if>
+					<if test="sysModuleCustom.showorder != null">
+						showorder = #{sysModuleCustom.showorder},
+					</if>
+					<if test="sysModuleCustom.isSeaf != null">
+						is_seaf = #{sysModuleCustom.isSeaf},
+					</if>
+					<if test="sysModuleCustom.isDisplay != null">
+						is_display = #{sysModuleCustom.isDisplay},
+					</if>
+					<if test="sysModuleCustom.isEnable != null">
+						is_enable = #{sysModuleCustom.isEnable},
+					</if>
+					<if test="sysModuleCustom.isActivation != null">
+						is_activation = #{sysModuleCustom.isActivation},
+					</if>
+					<if test="sysModuleCustom.isDel != null">
+						is_del = #{sysModuleCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		module_id = #{sysModuleCustom.moduleId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysModuleCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysModuleQueryVo">
+		UPDATE sys_module
+		<set>
+			<if test="sysModuleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateModuleName == true">
+						module_name = #{sysModuleCustom.moduleName},
+					</if>
+					<if test="updateModuleDescription == true">
+						module_description = #{sysModuleCustom.moduleDescription},
+					</if>
+					<if test="updateParentId == true">
+						parent_id = #{sysModuleCustom.parentId},
+					</if>
+					<if test="updateModuleUrl == true">
+						module_url = #{sysModuleCustom.moduleUrl},
+					</if>
+					<if test="updateModuleIcon == true">
+						module_icon = #{sysModuleCustom.moduleIcon},
+					</if>
+					<if test="updateShoworder == true">
+						showorder = #{sysModuleCustom.showorder},
+					</if>
+					<if test="updateIsSeaf == true">
+						is_seaf = #{sysModuleCustom.isSeaf},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{sysModuleCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{sysModuleCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{sysModuleCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{sysModuleCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		module_id = #{sysModuleCustom.moduleId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteSysModuleCustomByKey" parameterType="Integer">
+		update sys_module
+		set is_del = 0
+		WHERE
+		module_id = #{moduleId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteSysModuleCustomByKeyList" parameterType="ArrayList">
+		update sys_module
+		set is_del = 0
+		WHERE
+		module_id in
+		<foreach collection="moduleIdList" separator="," item="moduleId" open="(" close=")">
+			#{moduleId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

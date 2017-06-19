@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.system.extended.SysModuleMapperExtended">
+
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysModuleCustom">
+		<id column="module_id" property="moduleId" jdbcType="INTEGER" />
+		<result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+		<result column="module_description" property="moduleDescription" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="module_url" property="moduleUrl" jdbcType="VARCHAR" />
+		<result column="module_icon" property="moduleIcon" jdbcType="VARCHAR" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="is_seaf" property="isSeaf" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<!-- ============================================================================== -->
+
+	<!-- sql 代码块 -->
+	<sql id="inMIdSQL">
+		<foreach collection="mIdList" separator="," item="mid" open="(" close=")">
+			#{mid}
+		</foreach>
+	</sql>
+
+	<!-- 用户 可以使用的模块的ID -->
+	<select id="getModuleCheckedIdByUserId" parameterType="Integer" resultType="Integer">
+		select srm.module_id 
+		
+		from sys_role_module srm, sys_role sr, sys_user_role sur
+		
+		where srm.role_id = sr.role_id
+		and sr.role_id = sur.role_id
+		and sur.user_id = #{userId}
+		group by srm.module_id
+	</select>
+
+	<!-- 查询 用户可以使用的一级菜单 -->
+	<select id="getModuleCheckedOneByUserId" resultMap="BaseResultMap">
+		select * from sys_module m1
+		where parent_id = 0
+		and is_enable = 1
+		and m1.module_id in
+		<include refid="inMIdSQL" />
+		group by m1.module_id
+		order by m1.showorder
+	</select>
+
+	<!-- 查询用户的 第二层 第三城 第四层 菜单 -->
+	<select id="getModuleCheckedOtherByUserId" resultMap="BaseResultMap">
+		select * from sys_module m1
+		where parent_id != 0
+		and is_enable = 1
+		and m1.module_id in
+		<include refid="inMIdSQL" />
+		and m1.parent_id = #{moduleId}
+		order by m1.showorder
+	</select>
+
+	<!-- -->
+
+</mapper>

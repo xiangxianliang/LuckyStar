@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.system.extended.SysRoleMapperExtended">
+
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysRoleCustom">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="role_description" property="roleDescription" jdbcType="VARCHAR" />
+		<result column="role_remark" property="roleRemark" jdbcType="VARCHAR" />
+		<result column="role_updatedate" property="roleUpdatedate" jdbcType="TIMESTAMP" />
+		<result column="is_permissions" property="isPermissions" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+
+
+	<!-- 查询是否已经分配了权限 -->
+	<select id="getModuleCheckedByRoleId" resultType="Integer">
+		select count(sys_role_module.role_module_id)
+		from sys_role, sys_role_module, sys_role_permission
+		where sys_role.role_id = sys_role_module.role_id
+		and sys_role.role_id = sys_role_permission.role_id
+		and sys_role_module.role_id = sys_role_permission.role_id
+		and sys_role.role_id = #{roleId }
+		and sys_role_module.module_id = ${moduleId }
+	</select>
+
+	<resultMap id="roleTreeRM" type="com.gll.ls.core.pojo.utils.tree.vo.Tree">
+		<id column="id" property="id" />
+		<result column="text" property="text" />
+		<result column="sel" property="sel" />
+	</resultMap>
+
+	<!-- 根据用户的id查询用户角色 -->
+	<select id="getRoleCheckedByUserId" parameterType="Integer" resultMap="roleTreeRM">
+		select sr.role_id id, sr.role_name text, (
+			select count(1) from sys_user_role 
+			where user_id = #{userId } and role_id = sr.role_id ) sel
+			
+			from sys_role sr 
+			left join sys_user_role sur
+			on sr.role_id = sur.role_id
+			and sr.is_del =1 and sur.user_id =#{userId }
+	</select>
+
+	<!-- -->
+
+
+
+</mapper>

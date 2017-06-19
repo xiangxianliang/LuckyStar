@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysDictInfoMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysDictInfoCustom">
+		<id column="info_id" property="infoId" jdbcType="INTEGER" />
+		<result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="info_value" property="infoValue" jdbcType="VARCHAR" />
+		<result column="info_description" property="infoDescription" jdbcType="VARCHAR" />
+		<result column="info_remark" property="infoRemark" jdbcType="VARCHAR" />
+		<result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+		<result column="value_type" property="valueType" jdbcType="INTEGER" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="dictInfoSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			info_id, type_id, info_value, info_description, info_remark, updatetime, value_type, showorder, is_display, is_enable, is_activation, is_del
+		</if>
+		from sys_dict_info
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="dictInfoListWhere">
+		<where>
+			<if test="sysDictInfoCustom != null">
+				<if test="sysDictInfoCustom.infoId != null">
+					and info_id = #{sysDictInfoCustom.infoId}
+				</if>
+				<if test="sysDictInfoCustom.typeId != null">
+					and type_id = #{sysDictInfoCustom.typeId}
+				</if>
+				<if test="sysDictInfoCustom.infoValue != null">
+					<if test="infoValueLike == false">
+						and info_value = #{sysDictInfoCustom.infoValue}
+					</if>
+					<if test="infoValueLike == true">
+						and info_value like "%"#{sysDictInfoCustom.infoValue}"%"
+					</if>
+				</if>
+				<if test="sysDictInfoCustom.infoDescription != null">
+					<if test="infoDescriptionLike == false">
+						and info_description = #{sysDictInfoCustom.infoDescription}
+					</if>
+					<if test="infoDescriptionLike == true">
+						and info_description like "%"#{sysDictInfoCustom.infoDescription}"%"
+					</if>
+				</if>
+				<if test="sysDictInfoCustom.infoRemark != null">
+					<if test="infoRemarkLike == false">
+						and info_remark = #{sysDictInfoCustom.infoRemark}
+					</if>
+					<if test="infoRemarkLike == true">
+						and info_remark like "%"#{sysDictInfoCustom.infoRemark}"%"
+					</if>
+				</if>
+				<if test="sysDictInfoCustom.updatetime != null">
+					and updatetime = #{sysDictInfoCustom.updatetime}
+				</if>
+				<if test="sysDictInfoCustom.valueType != null">
+					and value_type = #{sysDictInfoCustom.valueType}
+				</if>
+				<if test="sysDictInfoCustom.showorder != null">
+					and showorder = #{sysDictInfoCustom.showorder}
+				</if>
+				<if test="sysDictInfoCustom.isDisplay != null">
+					and is_display = #{sysDictInfoCustom.isDisplay}
+				</if>
+				<if test="sysDictInfoCustom.isEnable != null">
+					and is_enable = #{sysDictInfoCustom.isEnable}
+				</if>
+				<if test="sysDictInfoCustom.isActivation != null">
+					and is_activation = #{sysDictInfoCustom.isActivation}
+				</if>
+				<if test="sysDictInfoCustom.isDel != null">
+					and is_del = #{sysDictInfoCustom.isDel}
+				</if>
+			</if>
+			<if test="infoIdStart != null">
+				and info_id &gt;= #{infoIdStart}
+			</if>
+			<if test="infoIdEnd != null">
+				and info_id &lt; #{infoIdEnd}
+			</if>
+			<if test="typeIdStart != null">
+				and type_id &gt;= #{typeIdStart}
+			</if>
+			<if test="typeIdEnd != null">
+				and type_id &lt; #{typeIdEnd}
+			</if>
+			<if test="updatetimeStart != null">
+				and updatetime &gt;= #{updatetimeStart}
+			</if>
+			<if test="updatetimeEnd != null">
+				and updatetime &lt; #{updatetimeEnd}
+			</if>
+			<if test="valueTypeStart != null">
+				and value_type &gt;= #{valueTypeStart}
+			</if>
+			<if test="valueTypeEnd != null">
+				and value_type &lt; #{valueTypeEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="dictInfoListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="dictInfoListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysDictInfoCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="dictInfoSelector" />
+		<include refid="dictInfoListWhere" />
+		<include refid="dictInfoListOrder" />
+		<include refid="dictInfoListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysDictInfoCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_dict_info
+		<include refid="dictInfoListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysDictInfoCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="dictInfoSelector" />
+		<include refid="dictInfoListWhere" />
+		<include refid="dictInfoListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysDictInfoCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		info_id, type_id, info_value, info_description, info_remark, updatetime,
+		value_type, showorder, is_display, is_enable, is_activation, is_del
+		from sys_dict_info
+		WHERE
+		info_id = #{infoId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysDictInfoCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="dictInfoSelector" />
+		WHERE
+		info_id = #{sysDictInfoCustom.infoId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysDictInfoCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		info_id, type_id, info_value, info_description, info_remark, updatetime, value_type, showorder, is_display, is_enable, is_activation, is_del
+		from
+		sys_dict_info
+		WHERE
+		info_id in
+		<foreach collection="infoIdList" separator="," item="infoId" open="(" close=")">
+			#{infoId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysDictInfoListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="dictInfoSelector" />
+		WHERE
+		info_id in
+		<foreach collection="infoIdList" separator="," item="infoId" open="(" close=")">
+			#{infoId}
+		</foreach>
+		<include refid="dictInfoListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysDictInfoCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo" useGeneratedKeys="true" keyProperty="sysDictInfoCustom.infoId">
+		INSERT INTO sys_dict_info
+		<if test="sysDictInfoCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysDictInfoCustom.infoId != null">
+					info_id,
+				</if>
+				<if test="sysDictInfoCustom.typeId != null">
+					type_id,
+				</if>
+				<if test="sysDictInfoCustom.infoValue != null">
+					info_value,
+				</if>
+				<if test="sysDictInfoCustom.infoDescription != null">
+					info_description,
+				</if>
+				<if test="sysDictInfoCustom.infoRemark != null">
+					info_remark,
+				</if>
+				<if test="sysDictInfoCustom.updatetime != null">
+					updatetime,
+				</if>
+				<if test="sysDictInfoCustom.valueType != null">
+					value_type,
+				</if>
+				<if test="sysDictInfoCustom.showorder != null">
+					showorder,
+				</if>
+				<if test="sysDictInfoCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="sysDictInfoCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="sysDictInfoCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="sysDictInfoCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysDictInfoCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysDictInfoCustom.infoId != null">
+					#{sysDictInfoCustom.infoId},
+				</if>
+				<if test="sysDictInfoCustom.typeId != null">
+					#{sysDictInfoCustom.typeId},
+				</if>
+				<if test="sysDictInfoCustom.infoValue != null">
+					#{sysDictInfoCustom.infoValue},
+				</if>
+				<if test="sysDictInfoCustom.infoDescription != null">
+					#{sysDictInfoCustom.infoDescription},
+				</if>
+				<if test="sysDictInfoCustom.infoRemark != null">
+					#{sysDictInfoCustom.infoRemark},
+				</if>
+				<if test="sysDictInfoCustom.updatetime != null">
+					#{sysDictInfoCustom.updatetime},
+				</if>
+				<if test="sysDictInfoCustom.valueType != null">
+					#{sysDictInfoCustom.valueType},
+				</if>
+				<if test="sysDictInfoCustom.showorder != null">
+					#{sysDictInfoCustom.showorder},
+				</if>
+				<if test="sysDictInfoCustom.isDisplay != null">
+					#{sysDictInfoCustom.isDisplay},
+				</if>
+				<if test="sysDictInfoCustom.isEnable != null">
+					#{sysDictInfoCustom.isEnable},
+				</if>
+				<if test="sysDictInfoCustom.isActivation != null">
+					#{sysDictInfoCustom.isActivation},
+				</if>
+				<if test="sysDictInfoCustom.isDel != null">
+					#{sysDictInfoCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysDictInfoCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoCustom" useGeneratedKeys="true" keyProperty="infoId">
+		INSERT INTO sys_dict_info
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="infoId != null">
+				info_id,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="infoValue != null">
+				info_value,
+			</if>
+			<if test="infoDescription != null">
+				info_description,
+			</if>
+			<if test="infoRemark != null">
+				info_remark,
+			</if>
+			<if test="updatetime != null">
+				updatetime,
+			</if>
+			<if test="valueType != null">
+				value_type,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="infoId != null">
+				#{infoId},
+			</if>
+			<if test="typeId != null">
+				#{typeId},
+			</if>
+			<if test="infoValue != null">
+				#{infoValue},
+			</if>
+			<if test="infoDescription != null">
+				#{infoDescription},
+			</if>
+			<if test="infoRemark != null">
+				#{infoRemark},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime},
+			</if>
+			<if test="valueType != null">
+				#{valueType},
+			</if>
+			<if test="showorder != null">
+				#{showorder},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysDictInfoCustomByKey" parameterType="Integer">
+		DELETE FROM sys_dict_info
+		WHERE
+		info_id = #{infoId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysDictInfoCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_dict_info
+		WHERE
+		info_id in
+		<foreach collection="infoIdList" separator="," item="infoId" open="(" close=")">
+			#{infoId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysDictInfoCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo">
+		UPDATE sys_dict_info
+		<set>
+			<if test="sysDictInfoCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysDictInfoCustom.typeId != null">
+						type_id = #{sysDictInfoCustom.typeId},
+					</if>
+					<if test="sysDictInfoCustom.infoValue != null">
+						info_value = #{sysDictInfoCustom.infoValue},
+					</if>
+					<if test="sysDictInfoCustom.infoDescription != null">
+						info_description = #{sysDictInfoCustom.infoDescription},
+					</if>
+					<if test="sysDictInfoCustom.infoRemark != null">
+						info_remark = #{sysDictInfoCustom.infoRemark},
+					</if>
+					<if test="sysDictInfoCustom.updatetime != null">
+						updatetime = #{sysDictInfoCustom.updatetime},
+					</if>
+					<if test="sysDictInfoCustom.valueType != null">
+						value_type = #{sysDictInfoCustom.valueType},
+					</if>
+					<if test="sysDictInfoCustom.showorder != null">
+						showorder = #{sysDictInfoCustom.showorder},
+					</if>
+					<if test="sysDictInfoCustom.isDisplay != null">
+						is_display = #{sysDictInfoCustom.isDisplay},
+					</if>
+					<if test="sysDictInfoCustom.isEnable != null">
+						is_enable = #{sysDictInfoCustom.isEnable},
+					</if>
+					<if test="sysDictInfoCustom.isActivation != null">
+						is_activation = #{sysDictInfoCustom.isActivation},
+					</if>
+					<if test="sysDictInfoCustom.isDel != null">
+						is_del = #{sysDictInfoCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		info_id = #{sysDictInfoCustom.infoId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysDictInfoCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysDictInfoQueryVo">
+		UPDATE sys_dict_info
+		<set>
+			<if test="sysDictInfoCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateTypeId == true">
+						type_id = #{sysDictInfoCustom.typeId},
+					</if>
+					<if test="updateInfoValue == true">
+						info_value = #{sysDictInfoCustom.infoValue},
+					</if>
+					<if test="updateInfoDescription == true">
+						info_description = #{sysDictInfoCustom.infoDescription},
+					</if>
+					<if test="updateInfoRemark == true">
+						info_remark = #{sysDictInfoCustom.infoRemark},
+					</if>
+					<if test="updateUpdatetime == true">
+						updatetime = #{sysDictInfoCustom.updatetime},
+					</if>
+					<if test="updateValueType == true">
+						value_type = #{sysDictInfoCustom.valueType},
+					</if>
+					<if test="updateShoworder == true">
+						showorder = #{sysDictInfoCustom.showorder},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{sysDictInfoCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{sysDictInfoCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{sysDictInfoCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{sysDictInfoCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		info_id = #{sysDictInfoCustom.infoId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteSysDictInfoCustomByKey" parameterType="Integer">
+		update sys_dict_info
+		set is_del = 0
+		WHERE
+		info_id = #{infoId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteSysDictInfoCustomByKeyList" parameterType="ArrayList">
+		update sys_dict_info
+		set is_del = 0
+		WHERE
+		info_id in
+		<foreach collection="infoIdList" separator="," item="infoId" open="(" close=")">
+			#{infoId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

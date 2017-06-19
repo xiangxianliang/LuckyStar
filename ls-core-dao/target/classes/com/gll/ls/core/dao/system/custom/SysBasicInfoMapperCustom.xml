@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysBasicInfoMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysBasicInfoCustom">
+		<id column="basic_info_id" property="basicInfoId" jdbcType="INTEGER" />
+		<result column="basic_info_name" property="basicInfoName" jdbcType="VARCHAR" />
+		<result column="basic_info_value" property="basicInfoValue" jdbcType="VARCHAR" />
+		<result column="basic_info_type" property="basicInfoType" jdbcType="INTEGER" />
+		<result column="basic_info_tag" property="basicInfoTag" jdbcType="VARCHAR" />
+		<result column="basic_info_description" property="basicInfoDescription" jdbcType="VARCHAR" />
+		<result column="basic_info_remark" property="basicInfoRemark" jdbcType="VARCHAR" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="basicInfoSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			basic_info_id, basic_info_name, basic_info_value, basic_info_type, basic_info_tag, basic_info_description, basic_info_remark, is_display,
+			is_enable, is_activation, is_del
+		</if>
+		from sys_basic_info
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="basicInfoListWhere">
+		<where>
+			<if test="sysBasicInfoCustom != null">
+				<if test="sysBasicInfoCustom.basicInfoId != null">
+					and basic_info_id = #{sysBasicInfoCustom.basicInfoId}
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoName != null">
+					<if test="basicInfoNameLike == false">
+						and basic_info_name = #{sysBasicInfoCustom.basicInfoName}
+					</if>
+					<if test="basicInfoNameLike == true">
+						and basic_info_name like "%"#{sysBasicInfoCustom.basicInfoName}"%"
+					</if>
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoValue != null">
+					<if test="basicInfoValueLike == false">
+						and basic_info_value = #{sysBasicInfoCustom.basicInfoValue}
+					</if>
+					<if test="basicInfoValueLike == true">
+						and basic_info_value like "%"#{sysBasicInfoCustom.basicInfoValue}"%"
+					</if>
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoType != null">
+					and basic_info_type = #{sysBasicInfoCustom.basicInfoType}
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoTag != null">
+					<if test="basicInfoTagLike == false">
+						and basic_info_tag = #{sysBasicInfoCustom.basicInfoTag}
+					</if>
+					<if test="basicInfoTagLike == true">
+						and basic_info_tag like "%"#{sysBasicInfoCustom.basicInfoTag}"%"
+					</if>
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoDescription != null">
+					<if test="basicInfoDescriptionLike == false">
+						and basic_info_description = #{sysBasicInfoCustom.basicInfoDescription}
+					</if>
+					<if test="basicInfoDescriptionLike == true">
+						and basic_info_description like "%"#{sysBasicInfoCustom.basicInfoDescription}"%"
+					</if>
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoRemark != null">
+					<if test="basicInfoRemarkLike == false">
+						and basic_info_remark = #{sysBasicInfoCustom.basicInfoRemark}
+					</if>
+					<if test="basicInfoRemarkLike == true">
+						and basic_info_remark like "%"#{sysBasicInfoCustom.basicInfoRemark}"%"
+					</if>
+				</if>
+				<if test="sysBasicInfoCustom.isDisplay != null">
+					and is_display = #{sysBasicInfoCustom.isDisplay}
+				</if>
+				<if test="sysBasicInfoCustom.isEnable != null">
+					and is_enable = #{sysBasicInfoCustom.isEnable}
+				</if>
+				<if test="sysBasicInfoCustom.isActivation != null">
+					and is_activation = #{sysBasicInfoCustom.isActivation}
+				</if>
+				<if test="sysBasicInfoCustom.isDel != null">
+					and is_del = #{sysBasicInfoCustom.isDel}
+				</if>
+			</if>
+			<if test="basicInfoIdStart != null">
+				and basic_info_id &gt;= #{basicInfoIdStart}
+			</if>
+			<if test="basicInfoIdEnd != null">
+				and basic_info_id &lt; #{basicInfoIdEnd}
+			</if>
+			<if test="basicInfoTypeStart != null">
+				and basic_info_type &gt;= #{basicInfoTypeStart}
+			</if>
+			<if test="basicInfoTypeEnd != null">
+				and basic_info_type &lt; #{basicInfoTypeEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="basicInfoListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="basicInfoListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysBasicInfoCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="basicInfoSelector" />
+		<include refid="basicInfoListWhere" />
+		<include refid="basicInfoListOrder" />
+		<include refid="basicInfoListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysBasicInfoCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_basic_info
+		<include refid="basicInfoListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysBasicInfoCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="basicInfoSelector" />
+		<include refid="basicInfoListWhere" />
+		<include refid="basicInfoListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysBasicInfoCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		basic_info_id, basic_info_name, basic_info_value, basic_info_type,
+		basic_info_tag, basic_info_description, basic_info_remark, is_display, is_enable, is_activation, is_del
+		from sys_basic_info
+		WHERE
+		basic_info_id = #{basicInfoId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysBasicInfoCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="basicInfoSelector" />
+		WHERE
+		basic_info_id = #{sysBasicInfoCustom.basicInfoId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysBasicInfoCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		basic_info_id, basic_info_name, basic_info_value, basic_info_type, basic_info_tag, basic_info_description, basic_info_remark, is_display, is_enable,
+		is_activation, is_del
+		from sys_basic_info
+		WHERE
+		basic_info_id in
+		<foreach collection="basicInfoIdList" separator="," item="basicInfoId" open="(" close=")">
+			#{basicInfoId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysBasicInfoListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo" resultMap="BaseResultMap">
+		<include refid="basicInfoSelector" />
+		WHERE
+		basic_info_id in
+		<foreach collection="basicInfoIdList" separator="," item="basicInfoId" open="(" close=")">
+			#{basicInfoId}
+		</foreach>
+		<include refid="basicInfoListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysBasicInfoCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo" useGeneratedKeys="true"
+		keyProperty="sysBasicInfoCustom.basicInfoId">
+		INSERT INTO sys_basic_info
+		<if test="sysBasicInfoCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysBasicInfoCustom.basicInfoId != null">
+					basic_info_id,
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoName != null">
+					basic_info_name,
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoValue != null">
+					basic_info_value,
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoType != null">
+					basic_info_type,
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoTag != null">
+					basic_info_tag,
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoDescription != null">
+					basic_info_description,
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoRemark != null">
+					basic_info_remark,
+				</if>
+				<if test="sysBasicInfoCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="sysBasicInfoCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="sysBasicInfoCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="sysBasicInfoCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysBasicInfoCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysBasicInfoCustom.basicInfoId != null">
+					#{sysBasicInfoCustom.basicInfoId},
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoName != null">
+					#{sysBasicInfoCustom.basicInfoName},
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoValue != null">
+					#{sysBasicInfoCustom.basicInfoValue},
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoType != null">
+					#{sysBasicInfoCustom.basicInfoType},
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoTag != null">
+					#{sysBasicInfoCustom.basicInfoTag},
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoDescription != null">
+					#{sysBasicInfoCustom.basicInfoDescription},
+				</if>
+				<if test="sysBasicInfoCustom.basicInfoRemark != null">
+					#{sysBasicInfoCustom.basicInfoRemark},
+				</if>
+				<if test="sysBasicInfoCustom.isDisplay != null">
+					#{sysBasicInfoCustom.isDisplay},
+				</if>
+				<if test="sysBasicInfoCustom.isEnable != null">
+					#{sysBasicInfoCustom.isEnable},
+				</if>
+				<if test="sysBasicInfoCustom.isActivation != null">
+					#{sysBasicInfoCustom.isActivation},
+				</if>
+				<if test="sysBasicInfoCustom.isDel != null">
+					#{sysBasicInfoCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysBasicInfoCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoCustom" useGeneratedKeys="true" keyProperty="basicInfoId">
+		INSERT INTO sys_basic_info
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="basicInfoId != null">
+				basic_info_id,
+			</if>
+			<if test="basicInfoName != null">
+				basic_info_name,
+			</if>
+			<if test="basicInfoValue != null">
+				basic_info_value,
+			</if>
+			<if test="basicInfoType != null">
+				basic_info_type,
+			</if>
+			<if test="basicInfoTag != null">
+				basic_info_tag,
+			</if>
+			<if test="basicInfoDescription != null">
+				basic_info_description,
+			</if>
+			<if test="basicInfoRemark != null">
+				basic_info_remark,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="basicInfoId != null">
+				#{basicInfoId},
+			</if>
+			<if test="basicInfoName != null">
+				#{basicInfoName},
+			</if>
+			<if test="basicInfoValue != null">
+				#{basicInfoValue},
+			</if>
+			<if test="basicInfoType != null">
+				#{basicInfoType},
+			</if>
+			<if test="basicInfoTag != null">
+				#{basicInfoTag},
+			</if>
+			<if test="basicInfoDescription != null">
+				#{basicInfoDescription},
+			</if>
+			<if test="basicInfoRemark != null">
+				#{basicInfoRemark},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysBasicInfoCustomByKey" parameterType="Integer">
+		DELETE FROM sys_basic_info
+		WHERE
+		basic_info_id = #{basicInfoId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysBasicInfoCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_basic_info
+		WHERE
+		basic_info_id in
+		<foreach collection="basicInfoIdList" separator="," item="basicInfoId" open="(" close=")">
+			#{basicInfoId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysBasicInfoCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo">
+		UPDATE sys_basic_info
+		<set>
+			<if test="sysBasicInfoCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysBasicInfoCustom.basicInfoName != null">
+						basic_info_name = #{sysBasicInfoCustom.basicInfoName},
+					</if>
+					<if test="sysBasicInfoCustom.basicInfoValue != null">
+						basic_info_value = #{sysBasicInfoCustom.basicInfoValue},
+					</if>
+					<if test="sysBasicInfoCustom.basicInfoType != null">
+						basic_info_type = #{sysBasicInfoCustom.basicInfoType},
+					</if>
+					<if test="sysBasicInfoCustom.basicInfoTag != null">
+						basic_info_tag = #{sysBasicInfoCustom.basicInfoTag},
+					</if>
+					<if test="sysBasicInfoCustom.basicInfoDescription != null">
+						basic_info_description = #{sysBasicInfoCustom.basicInfoDescription},
+					</if>
+					<if test="sysBasicInfoCustom.basicInfoRemark != null">
+						basic_info_remark = #{sysBasicInfoCustom.basicInfoRemark},
+					</if>
+					<if test="sysBasicInfoCustom.isDisplay != null">
+						is_display = #{sysBasicInfoCustom.isDisplay},
+					</if>
+					<if test="sysBasicInfoCustom.isEnable != null">
+						is_enable = #{sysBasicInfoCustom.isEnable},
+					</if>
+					<if test="sysBasicInfoCustom.isActivation != null">
+						is_activation = #{sysBasicInfoCustom.isActivation},
+					</if>
+					<if test="sysBasicInfoCustom.isDel != null">
+						is_del = #{sysBasicInfoCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		basic_info_id = #{sysBasicInfoCustom.basicInfoId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysBasicInfoCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysBasicInfoQueryVo">
+		UPDATE sys_basic_info
+		<set>
+			<if test="sysBasicInfoCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateBasicInfoName == true">
+						basic_info_name = #{sysBasicInfoCustom.basicInfoName},
+					</if>
+					<if test="updateBasicInfoValue == true">
+						basic_info_value = #{sysBasicInfoCustom.basicInfoValue},
+					</if>
+					<if test="updateBasicInfoType == true">
+						basic_info_type = #{sysBasicInfoCustom.basicInfoType},
+					</if>
+					<if test="updateBasicInfoTag == true">
+						basic_info_tag = #{sysBasicInfoCustom.basicInfoTag},
+					</if>
+					<if test="updateBasicInfoDescription == true">
+						basic_info_description = #{sysBasicInfoCustom.basicInfoDescription},
+					</if>
+					<if test="updateBasicInfoRemark == true">
+						basic_info_remark = #{sysBasicInfoCustom.basicInfoRemark},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{sysBasicInfoCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{sysBasicInfoCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{sysBasicInfoCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{sysBasicInfoCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		basic_info_id = #{sysBasicInfoCustom.basicInfoId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteSysBasicInfoCustomByKey" parameterType="Integer">
+		update sys_basic_info
+		set is_del = 0
+		WHERE
+		basic_info_id = #{basicInfoId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteSysBasicInfoCustomByKeyList" parameterType="ArrayList">
+		update sys_basic_info
+		set is_del = 0
+		WHERE
+		basic_info_id in
+		<foreach collection="basicInfoIdList" separator="," item="basicInfoId" open="(" close=")">
+			#{basicInfoId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

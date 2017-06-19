@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysUserRoleMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysUserRoleCustom">
+		<id column="user_role_id" property="userRoleId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="userRoleSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			user_role_id, user_id, role_id
+		</if>
+		from sys_user_role
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="userRoleListWhere">
+		<where>
+			<if test="sysUserRoleCustom != null">
+				<if test="sysUserRoleCustom.userRoleId != null">
+					and user_role_id = #{sysUserRoleCustom.userRoleId}
+				</if>
+				<if test="sysUserRoleCustom.userId != null">
+					and user_id = #{sysUserRoleCustom.userId}
+				</if>
+				<if test="sysUserRoleCustom.roleId != null">
+					and role_id = #{sysUserRoleCustom.roleId}
+				</if>
+			</if>
+			<if test="userRoleIdStart != null">
+				and user_role_id &gt;= #{userRoleIdStart}
+			</if>
+			<if test="userRoleIdEnd != null">
+				and user_role_id &lt; #{userRoleIdEnd}
+			</if>
+			<if test="userIdStart != null">
+				and user_id &gt;= #{userIdStart}
+			</if>
+			<if test="userIdEnd != null">
+				and user_id &lt; #{userIdEnd}
+			</if>
+			<if test="roleIdStart != null">
+				and role_id &gt;= #{roleIdStart}
+			</if>
+			<if test="roleIdEnd != null">
+				and role_id &lt; #{roleIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="userRoleListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="userRoleListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysUserRoleCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="userRoleSelector" />
+		<include refid="userRoleListWhere" />
+		<include refid="userRoleListOrder" />
+		<include refid="userRoleListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysUserRoleCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_user_role
+		<include refid="userRoleListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysUserRoleCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="userRoleSelector" />
+		<include refid="userRoleListWhere" />
+		<include refid="userRoleListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysUserRoleCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		user_role_id, user_id, role_id
+		from sys_user_role
+		WHERE
+		user_role_id =
+		#{userRoleId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysUserRoleCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="userRoleSelector" />
+		WHERE
+		user_role_id = #{sysUserRoleCustom.userRoleId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysUserRoleCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		user_role_id, user_id, role_id
+		from sys_user_role
+		WHERE
+		user_role_id in
+		<foreach collection="userRoleIdList" separator="," item="userRoleId" open="(" close=")">
+			#{userRoleId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysUserRoleListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="userRoleSelector" />
+		WHERE
+		user_role_id in
+		<foreach collection="userRoleIdList" separator="," item="userRoleId" open="(" close=")">
+			#{userRoleId}
+		</foreach>
+		<include refid="userRoleListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysUserRoleCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo" useGeneratedKeys="true"
+		keyProperty="sysUserRoleCustom.userRoleId">
+		INSERT INTO sys_user_role
+		<if test="sysUserRoleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysUserRoleCustom.userRoleId != null">
+					user_role_id,
+				</if>
+				<if test="sysUserRoleCustom.userId != null">
+					user_id,
+				</if>
+				<if test="sysUserRoleCustom.roleId != null">
+					role_id,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysUserRoleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysUserRoleCustom.userRoleId != null">
+					#{sysUserRoleCustom.userRoleId},
+				</if>
+				<if test="sysUserRoleCustom.userId != null">
+					#{sysUserRoleCustom.userId},
+				</if>
+				<if test="sysUserRoleCustom.roleId != null">
+					#{sysUserRoleCustom.roleId},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysUserRoleCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleCustom" useGeneratedKeys="true" keyProperty="userRoleId">
+		INSERT INTO sys_user_role
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="userRoleId != null">
+				user_role_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userRoleId != null">
+				#{userRoleId},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="roleId != null">
+				#{roleId},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysUserRoleCustomByKey" parameterType="Integer">
+		DELETE FROM sys_user_role
+		WHERE
+		user_role_id = #{userRoleId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysUserRoleCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_user_role
+		WHERE
+		user_role_id in
+		<foreach collection="userRoleIdList" separator="," item="userRoleId" open="(" close=")">
+			#{userRoleId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysUserRoleCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo">
+		UPDATE sys_user_role
+		<set>
+			<if test="sysUserRoleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysUserRoleCustom.userId != null">
+						user_id = #{sysUserRoleCustom.userId},
+					</if>
+					<if test="sysUserRoleCustom.roleId != null">
+						role_id = #{sysUserRoleCustom.roleId},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		user_role_id = #{sysUserRoleCustom.userRoleId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysUserRoleCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysUserRoleQueryVo">
+		UPDATE sys_user_role
+		<set>
+			<if test="sysUserRoleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateUserId == true">
+						user_id = #{sysUserRoleCustom.userId},
+					</if>
+					<if test="updateRoleId == true">
+						role_id = #{sysUserRoleCustom.roleId},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		user_role_id = #{sysUserRoleCustom.userRoleId}
+	</update>
+
+
+</mapper>
+

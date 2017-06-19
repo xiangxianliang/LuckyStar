@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.resource.mapper.ResFeatureMapper">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.resource.po.ResFeature">
+		<id column="feature_id" property="featureId" jdbcType="INTEGER" />
+		<result column="feature_name" property="featureName" jdbcType="VARCHAR" />
+		<result column="feature_name_pc" property="featureNamePc" jdbcType="VARCHAR" />
+		<result column="feature_description" property="featureDescription" jdbcType="VARCHAR" />
+		<result column="feature_remark" property="featureRemark" jdbcType="VARCHAR" />
+		<result column="is_spec" property="isSpec" jdbcType="INTEGER" />
+		<result column="is_select" property="isSelect" jdbcType="INTEGER" />
+		<result column="is_show" property="isShow" jdbcType="INTEGER" />
+		<result column="input_type" property="inputType" jdbcType="INTEGER" />
+		<result column="select_value" property="selectValue" jdbcType="VARCHAR" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		feature_id, feature_name, feature_name_pc, feature_description, feature_remark, is_spec,
+		is_select, is_show, input_type, select_value, showorder,
+		type_id, is_display, is_enable,
+		is_activation, is_del
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gll.ls.core.pojo.resource.po.ResFeatureExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from res_feature
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from res_feature
+		where feature_id = #{featureId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from res_feature
+		where feature_id = #{featureId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.gll.ls.core.pojo.resource.po.ResFeatureExample">
+		delete from res_feature
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.gll.ls.core.pojo.resource.po.ResFeature">
+		insert into res_feature (feature_id, feature_name, feature_name_pc,
+		feature_description, feature_remark, is_spec,
+		is_select, is_show, input_type,
+		select_value, showorder, type_id,
+		is_display, is_enable, is_activation,
+		is_del)
+		values (#{featureId,jdbcType=INTEGER},
+		#{featureName,jdbcType=VARCHAR}, #{featureNamePc,jdbcType=VARCHAR},
+		#{featureDescription,jdbcType=VARCHAR}, #{featureRemark,jdbcType=VARCHAR},
+		#{isSpec,jdbcType=INTEGER},
+		#{isSelect,jdbcType=INTEGER}, #{isShow,jdbcType=INTEGER}, #{inputType,jdbcType=INTEGER},
+		#{selectValue,jdbcType=VARCHAR},
+		#{showorder,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
+		#{isDisplay,jdbcType=INTEGER}, #{isEnable,jdbcType=INTEGER}, #{isActivation,jdbcType=INTEGER},
+		#{isDel,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.gll.ls.core.pojo.resource.po.ResFeature">
+		insert into res_feature
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="featureId != null">
+				feature_id,
+			</if>
+			<if test="featureName != null">
+				feature_name,
+			</if>
+			<if test="featureNamePc != null">
+				feature_name_pc,
+			</if>
+			<if test="featureDescription != null">
+				feature_description,
+			</if>
+			<if test="featureRemark != null">
+				feature_remark,
+			</if>
+			<if test="isSpec != null">
+				is_spec,
+			</if>
+			<if test="isSelect != null">
+				is_select,
+			</if>
+			<if test="isShow != null">
+				is_show,
+			</if>
+			<if test="inputType != null">
+				input_type,
+			</if>
+			<if test="selectValue != null">
+				select_value,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="featureId != null">
+				#{featureId,jdbcType=INTEGER},
+			</if>
+			<if test="featureName != null">
+				#{featureName,jdbcType=VARCHAR},
+			</if>
+			<if test="featureNamePc != null">
+				#{featureNamePc,jdbcType=VARCHAR},
+			</if>
+			<if test="featureDescription != null">
+				#{featureDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="featureRemark != null">
+				#{featureRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="isSpec != null">
+				#{isSpec,jdbcType=INTEGER},
+			</if>
+			<if test="isSelect != null">
+				#{isSelect,jdbcType=INTEGER},
+			</if>
+			<if test="isShow != null">
+				#{isShow,jdbcType=INTEGER},
+			</if>
+			<if test="inputType != null">
+				#{inputType,jdbcType=INTEGER},
+			</if>
+			<if test="selectValue != null">
+				#{selectValue,jdbcType=VARCHAR},
+			</if>
+			<if test="showorder != null">
+				#{showorder,jdbcType=INTEGER},
+			</if>
+			<if test="typeId != null">
+				#{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay,jdbcType=INTEGER},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable,jdbcType=INTEGER},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				#{isDel,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.gll.ls.core.pojo.resource.po.ResFeatureExample" resultType="java.lang.Integer">
+		select count(*) from res_feature
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update res_feature
+		<set>
+			<if test="record.featureId != null">
+				feature_id = #{record.featureId,jdbcType=INTEGER},
+			</if>
+			<if test="record.featureName != null">
+				feature_name = #{record.featureName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.featureNamePc != null">
+				feature_name_pc = #{record.featureNamePc,jdbcType=VARCHAR},
+			</if>
+			<if test="record.featureDescription != null">
+				feature_description = #{record.featureDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="record.featureRemark != null">
+				feature_remark = #{record.featureRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isSpec != null">
+				is_spec = #{record.isSpec,jdbcType=INTEGER},
+			</if>
+			<if test="record.isSelect != null">
+				is_select = #{record.isSelect,jdbcType=INTEGER},
+			</if>
+			<if test="record.isShow != null">
+				is_show = #{record.isShow,jdbcType=INTEGER},
+			</if>
+			<if test="record.inputType != null">
+				input_type = #{record.inputType,jdbcType=INTEGER},
+			</if>
+			<if test="record.selectValue != null">
+				select_value = #{record.selectValue,jdbcType=VARCHAR},
+			</if>
+			<if test="record.showorder != null">
+				showorder = #{record.showorder,jdbcType=INTEGER},
+			</if>
+			<if test="record.typeId != null">
+				type_id = #{record.typeId,jdbcType=INTEGER},
+			</if>
+			<if test="record.isDisplay != null">
+				is_display = #{record.isDisplay,jdbcType=INTEGER},
+			</if>
+			<if test="record.isEnable != null">
+				is_enable = #{record.isEnable,jdbcType=INTEGER},
+			</if>
+			<if test="record.isActivation != null">
+				is_activation = #{record.isActivation,jdbcType=INTEGER},
+			</if>
+			<if test="record.isDel != null">
+				is_del = #{record.isDel,jdbcType=INTEGER},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update res_feature
+		set feature_id = #{record.featureId,jdbcType=INTEGER},
+		feature_name = #{record.featureName,jdbcType=VARCHAR},
+		feature_name_pc =
+		#{record.featureNamePc,jdbcType=VARCHAR},
+		feature_description = #{record.featureDescription,jdbcType=VARCHAR},
+		feature_remark =
+		#{record.featureRemark,jdbcType=VARCHAR},
+		is_spec = #{record.isSpec,jdbcType=INTEGER},
+		is_select = #{record.isSelect,jdbcType=INTEGER},
+		is_show =
+		#{record.isShow,jdbcType=INTEGER},
+		input_type = #{record.inputType,jdbcType=INTEGER},
+		select_value = #{record.selectValue,jdbcType=VARCHAR},
+		showorder =
+		#{record.showorder,jdbcType=INTEGER},
+		type_id = #{record.typeId,jdbcType=INTEGER},
+		is_display = #{record.isDisplay,jdbcType=INTEGER},
+		is_enable =
+		#{record.isEnable,jdbcType=INTEGER},
+		is_activation = #{record.isActivation,jdbcType=INTEGER},
+		is_del = #{record.isDel,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.gll.ls.core.pojo.resource.po.ResFeature">
+		update res_feature
+		<set>
+			<if test="featureName != null">
+				feature_name = #{featureName,jdbcType=VARCHAR},
+			</if>
+			<if test="featureNamePc != null">
+				feature_name_pc = #{featureNamePc,jdbcType=VARCHAR},
+			</if>
+			<if test="featureDescription != null">
+				feature_description = #{featureDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="featureRemark != null">
+				feature_remark = #{featureRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="isSpec != null">
+				is_spec = #{isSpec,jdbcType=INTEGER},
+			</if>
+			<if test="isSelect != null">
+				is_select = #{isSelect,jdbcType=INTEGER},
+			</if>
+			<if test="isShow != null">
+				is_show = #{isShow,jdbcType=INTEGER},
+			</if>
+			<if test="inputType != null">
+				input_type = #{inputType,jdbcType=INTEGER},
+			</if>
+			<if test="selectValue != null">
+				select_value = #{selectValue,jdbcType=VARCHAR},
+			</if>
+			<if test="showorder != null">
+				showorder = #{showorder,jdbcType=INTEGER},
+			</if>
+			<if test="typeId != null">
+				type_id = #{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="isDisplay != null">
+				is_display = #{isDisplay,jdbcType=INTEGER},
+			</if>
+			<if test="isEnable != null">
+				is_enable = #{isEnable,jdbcType=INTEGER},
+			</if>
+			<if test="isActivation != null">
+				is_activation = #{isActivation,jdbcType=INTEGER},
+			</if>
+			<if test="isDel != null">
+				is_del = #{isDel,jdbcType=INTEGER},
+			</if>
+		</set>
+		where feature_id = #{featureId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.gll.ls.core.pojo.resource.po.ResFeature">
+		update res_feature
+		set feature_name = #{featureName,jdbcType=VARCHAR},
+		feature_name_pc =
+		#{featureNamePc,jdbcType=VARCHAR},
+		feature_description = #{featureDescription,jdbcType=VARCHAR},
+		feature_remark = #{featureRemark,jdbcType=VARCHAR},
+		is_spec =
+		#{isSpec,jdbcType=INTEGER},
+		is_select = #{isSelect,jdbcType=INTEGER},
+		is_show = #{isShow,jdbcType=INTEGER},
+		input_type = #{inputType,jdbcType=INTEGER},
+		select_value = #{selectValue,jdbcType=VARCHAR},
+		showorder = #{showorder,jdbcType=INTEGER},
+		type_id = #{typeId,jdbcType=INTEGER},
+		is_display =
+		#{isDisplay,jdbcType=INTEGER},
+		is_enable = #{isEnable,jdbcType=INTEGER},
+		is_activation = #{isActivation,jdbcType=INTEGER},
+		is_del = #{isDel,jdbcType=INTEGER}
+		where feature_id = #{featureId,jdbcType=INTEGER}
+	</update>
+</mapper>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.system.mapper.SysPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.po.SysPermission" >
+    <id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+    <result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
+    <result column="permission_code" property="permissionCode" jdbcType="VARCHAR" />
+    <result column="permission_method" property="permissionMethod" jdbcType="VARCHAR" />
+    <result column="permission_description" property="permissionDescription" jdbcType="VARCHAR" />
+    <result column="permission_icon" property="permissionIcon" jdbcType="VARCHAR" />
+    <result column="parent_module_id" property="parentModuleId" jdbcType="INTEGER" />
+    <result column="showorder" property="showorder" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+    <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+    <result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    permission_id, permission_name, permission_code, permission_method, permission_description, 
+    permission_icon, parent_module_id, showorder, type, is_display, is_enable, is_activation, 
+    is_del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gll.ls.core.pojo.system.po.SysPermissionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_permission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gll.ls.core.pojo.system.po.SysPermissionExample" >
+    delete from sys_permission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gll.ls.core.pojo.system.po.SysPermission" >
+    insert into sys_permission (permission_id, permission_name, permission_code, 
+      permission_method, permission_description, 
+      permission_icon, parent_module_id, showorder, 
+      type, is_display, is_enable, 
+      is_activation, is_del)
+    values (#{permissionId,jdbcType=INTEGER}, #{permissionName,jdbcType=VARCHAR}, #{permissionCode,jdbcType=VARCHAR}, 
+      #{permissionMethod,jdbcType=VARCHAR}, #{permissionDescription,jdbcType=VARCHAR}, 
+      #{permissionIcon,jdbcType=VARCHAR}, #{parentModuleId,jdbcType=INTEGER}, #{showorder,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{isDisplay,jdbcType=INTEGER}, #{isEnable,jdbcType=INTEGER}, 
+      #{isActivation,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gll.ls.core.pojo.system.po.SysPermission" >
+    insert into sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        permission_id,
+      </if>
+      <if test="permissionName != null" >
+        permission_name,
+      </if>
+      <if test="permissionCode != null" >
+        permission_code,
+      </if>
+      <if test="permissionMethod != null" >
+        permission_method,
+      </if>
+      <if test="permissionDescription != null" >
+        permission_description,
+      </if>
+      <if test="permissionIcon != null" >
+        permission_icon,
+      </if>
+      <if test="parentModuleId != null" >
+        parent_module_id,
+      </if>
+      <if test="showorder != null" >
+        showorder,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="isDisplay != null" >
+        is_display,
+      </if>
+      <if test="isEnable != null" >
+        is_enable,
+      </if>
+      <if test="isActivation != null" >
+        is_activation,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null" >
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionCode != null" >
+        #{permissionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionMethod != null" >
+        #{permissionMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionDescription != null" >
+        #{permissionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionIcon != null" >
+        #{permissionIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentModuleId != null" >
+        #{parentModuleId,jdbcType=INTEGER},
+      </if>
+      <if test="showorder != null" >
+        #{showorder,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        #{isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="isEnable != null" >
+        #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isActivation != null" >
+        #{isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gll.ls.core.pojo.system.po.SysPermissionExample" resultType="java.lang.Integer" >
+    select count(*) from sys_permission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_permission
+    <set >
+      <if test="record.permissionId != null" >
+        permission_id = #{record.permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.permissionName != null" >
+        permission_name = #{record.permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionCode != null" >
+        permission_code = #{record.permissionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionMethod != null" >
+        permission_method = #{record.permissionMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionDescription != null" >
+        permission_description = #{record.permissionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permissionIcon != null" >
+        permission_icon = #{record.permissionIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentModuleId != null" >
+        parent_module_id = #{record.parentModuleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.showorder != null" >
+        showorder = #{record.showorder,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDisplay != null" >
+        is_display = #{record.isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="record.isEnable != null" >
+        is_enable = #{record.isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="record.isActivation != null" >
+        is_activation = #{record.isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_permission
+    set permission_id = #{record.permissionId,jdbcType=INTEGER},
+      permission_name = #{record.permissionName,jdbcType=VARCHAR},
+      permission_code = #{record.permissionCode,jdbcType=VARCHAR},
+      permission_method = #{record.permissionMethod,jdbcType=VARCHAR},
+      permission_description = #{record.permissionDescription,jdbcType=VARCHAR},
+      permission_icon = #{record.permissionIcon,jdbcType=VARCHAR},
+      parent_module_id = #{record.parentModuleId,jdbcType=INTEGER},
+      showorder = #{record.showorder,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      is_display = #{record.isDisplay,jdbcType=INTEGER},
+      is_enable = #{record.isEnable,jdbcType=INTEGER},
+      is_activation = #{record.isActivation,jdbcType=INTEGER},
+      is_del = #{record.isDel,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gll.ls.core.pojo.system.po.SysPermission" >
+    update sys_permission
+    <set >
+      <if test="permissionName != null" >
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionCode != null" >
+        permission_code = #{permissionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionMethod != null" >
+        permission_method = #{permissionMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionDescription != null" >
+        permission_description = #{permissionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionIcon != null" >
+        permission_icon = #{permissionIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentModuleId != null" >
+        parent_module_id = #{parentModuleId,jdbcType=INTEGER},
+      </if>
+      <if test="showorder != null" >
+        showorder = #{showorder,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        is_display = #{isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="isEnable != null" >
+        is_enable = #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isActivation != null" >
+        is_activation = #{isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gll.ls.core.pojo.system.po.SysPermission" >
+    update sys_permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      permission_code = #{permissionCode,jdbcType=VARCHAR},
+      permission_method = #{permissionMethod,jdbcType=VARCHAR},
+      permission_description = #{permissionDescription,jdbcType=VARCHAR},
+      permission_icon = #{permissionIcon,jdbcType=VARCHAR},
+      parent_module_id = #{parentModuleId,jdbcType=INTEGER},
+      showorder = #{showorder,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      is_display = #{isDisplay,jdbcType=INTEGER},
+      is_enable = #{isEnable,jdbcType=INTEGER},
+      is_activation = #{isActivation,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+</mapper>

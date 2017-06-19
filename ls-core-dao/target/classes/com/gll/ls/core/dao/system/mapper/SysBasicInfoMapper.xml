@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.system.mapper.SysBasicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.po.SysBasicInfo" >
+    <id column="basic_info_id" property="basicInfoId" jdbcType="INTEGER" />
+    <result column="basic_info_name" property="basicInfoName" jdbcType="VARCHAR" />
+    <result column="basic_info_value" property="basicInfoValue" jdbcType="VARCHAR" />
+    <result column="basic_info_type" property="basicInfoType" jdbcType="INTEGER" />
+    <result column="basic_info_tag" property="basicInfoTag" jdbcType="VARCHAR" />
+    <result column="basic_info_description" property="basicInfoDescription" jdbcType="VARCHAR" />
+    <result column="basic_info_remark" property="basicInfoRemark" jdbcType="VARCHAR" />
+    <result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+    <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+    <result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    basic_info_id, basic_info_name, basic_info_value, basic_info_type, basic_info_tag, 
+    basic_info_description, basic_info_remark, is_display, is_enable, is_activation, 
+    is_del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_basic_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_basic_info
+    where basic_info_id = #{basicInfoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_basic_info
+    where basic_info_id = #{basicInfoId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfoExample" >
+    delete from sys_basic_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfo" >
+    insert into sys_basic_info (basic_info_id, basic_info_name, basic_info_value, 
+      basic_info_type, basic_info_tag, basic_info_description, 
+      basic_info_remark, is_display, is_enable, 
+      is_activation, is_del)
+    values (#{basicInfoId,jdbcType=INTEGER}, #{basicInfoName,jdbcType=VARCHAR}, #{basicInfoValue,jdbcType=VARCHAR}, 
+      #{basicInfoType,jdbcType=INTEGER}, #{basicInfoTag,jdbcType=VARCHAR}, #{basicInfoDescription,jdbcType=VARCHAR}, 
+      #{basicInfoRemark,jdbcType=VARCHAR}, #{isDisplay,jdbcType=INTEGER}, #{isEnable,jdbcType=INTEGER}, 
+      #{isActivation,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfo" >
+    insert into sys_basic_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="basicInfoId != null" >
+        basic_info_id,
+      </if>
+      <if test="basicInfoName != null" >
+        basic_info_name,
+      </if>
+      <if test="basicInfoValue != null" >
+        basic_info_value,
+      </if>
+      <if test="basicInfoType != null" >
+        basic_info_type,
+      </if>
+      <if test="basicInfoTag != null" >
+        basic_info_tag,
+      </if>
+      <if test="basicInfoDescription != null" >
+        basic_info_description,
+      </if>
+      <if test="basicInfoRemark != null" >
+        basic_info_remark,
+      </if>
+      <if test="isDisplay != null" >
+        is_display,
+      </if>
+      <if test="isEnable != null" >
+        is_enable,
+      </if>
+      <if test="isActivation != null" >
+        is_activation,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="basicInfoId != null" >
+        #{basicInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="basicInfoName != null" >
+        #{basicInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoValue != null" >
+        #{basicInfoValue,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoType != null" >
+        #{basicInfoType,jdbcType=INTEGER},
+      </if>
+      <if test="basicInfoTag != null" >
+        #{basicInfoTag,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoDescription != null" >
+        #{basicInfoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoRemark != null" >
+        #{basicInfoRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        #{isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="isEnable != null" >
+        #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isActivation != null" >
+        #{isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfoExample" resultType="java.lang.Integer" >
+    select count(*) from sys_basic_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_basic_info
+    <set >
+      <if test="record.basicInfoId != null" >
+        basic_info_id = #{record.basicInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.basicInfoName != null" >
+        basic_info_name = #{record.basicInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.basicInfoValue != null" >
+        basic_info_value = #{record.basicInfoValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.basicInfoType != null" >
+        basic_info_type = #{record.basicInfoType,jdbcType=INTEGER},
+      </if>
+      <if test="record.basicInfoTag != null" >
+        basic_info_tag = #{record.basicInfoTag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.basicInfoDescription != null" >
+        basic_info_description = #{record.basicInfoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.basicInfoRemark != null" >
+        basic_info_remark = #{record.basicInfoRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDisplay != null" >
+        is_display = #{record.isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="record.isEnable != null" >
+        is_enable = #{record.isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="record.isActivation != null" >
+        is_activation = #{record.isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_basic_info
+    set basic_info_id = #{record.basicInfoId,jdbcType=INTEGER},
+      basic_info_name = #{record.basicInfoName,jdbcType=VARCHAR},
+      basic_info_value = #{record.basicInfoValue,jdbcType=VARCHAR},
+      basic_info_type = #{record.basicInfoType,jdbcType=INTEGER},
+      basic_info_tag = #{record.basicInfoTag,jdbcType=VARCHAR},
+      basic_info_description = #{record.basicInfoDescription,jdbcType=VARCHAR},
+      basic_info_remark = #{record.basicInfoRemark,jdbcType=VARCHAR},
+      is_display = #{record.isDisplay,jdbcType=INTEGER},
+      is_enable = #{record.isEnable,jdbcType=INTEGER},
+      is_activation = #{record.isActivation,jdbcType=INTEGER},
+      is_del = #{record.isDel,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfo" >
+    update sys_basic_info
+    <set >
+      <if test="basicInfoName != null" >
+        basic_info_name = #{basicInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoValue != null" >
+        basic_info_value = #{basicInfoValue,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoType != null" >
+        basic_info_type = #{basicInfoType,jdbcType=INTEGER},
+      </if>
+      <if test="basicInfoTag != null" >
+        basic_info_tag = #{basicInfoTag,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoDescription != null" >
+        basic_info_description = #{basicInfoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="basicInfoRemark != null" >
+        basic_info_remark = #{basicInfoRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        is_display = #{isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="isEnable != null" >
+        is_enable = #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isActivation != null" >
+        is_activation = #{isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where basic_info_id = #{basicInfoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gll.ls.core.pojo.system.po.SysBasicInfo" >
+    update sys_basic_info
+    set basic_info_name = #{basicInfoName,jdbcType=VARCHAR},
+      basic_info_value = #{basicInfoValue,jdbcType=VARCHAR},
+      basic_info_type = #{basicInfoType,jdbcType=INTEGER},
+      basic_info_tag = #{basicInfoTag,jdbcType=VARCHAR},
+      basic_info_description = #{basicInfoDescription,jdbcType=VARCHAR},
+      basic_info_remark = #{basicInfoRemark,jdbcType=VARCHAR},
+      is_display = #{isDisplay,jdbcType=INTEGER},
+      is_enable = #{isEnable,jdbcType=INTEGER},
+      is_activation = #{isActivation,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where basic_info_id = #{basicInfoId,jdbcType=INTEGER}
+  </update>
+</mapper>

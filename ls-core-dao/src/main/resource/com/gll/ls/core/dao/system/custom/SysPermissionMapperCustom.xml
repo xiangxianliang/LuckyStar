@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysPermissionMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysPermissionCustom">
+		<id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+		<result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
+		<result column="permission_code" property="permissionCode" jdbcType="VARCHAR" />
+		<result column="permission_method" property="permissionMethod" jdbcType="VARCHAR" />
+		<result column="permission_description" property="permissionDescription" jdbcType="VARCHAR" />
+		<result column="permission_icon" property="permissionIcon" jdbcType="VARCHAR" />
+		<result column="parent_module_id" property="parentModuleId" jdbcType="INTEGER" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="permissionSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			permission_id, permission_name, permission_code, permission_method, permission_description, permission_icon, parent_module_id, showorder, type,
+			is_display, is_enable, is_activation, is_del
+		</if>
+		from sys_permission
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="permissionListWhere">
+		<where>
+			<if test="sysPermissionCustom != null">
+				<if test="sysPermissionCustom.permissionId != null">
+					and permission_id = #{sysPermissionCustom.permissionId}
+				</if>
+				<if test="sysPermissionCustom.permissionName != null">
+					<if test="permissionNameLike == false">
+						and permission_name = #{sysPermissionCustom.permissionName}
+					</if>
+					<if test="permissionNameLike == true">
+						and permission_name like "%"#{sysPermissionCustom.permissionName}"%"
+					</if>
+				</if>
+				<if test="sysPermissionCustom.permissionCode != null">
+					<if test="permissionCodeLike == false">
+						and permission_code = #{sysPermissionCustom.permissionCode}
+					</if>
+					<if test="permissionCodeLike == true">
+						and permission_code like "%"#{sysPermissionCustom.permissionCode}"%"
+					</if>
+				</if>
+				<if test="sysPermissionCustom.permissionMethod != null">
+					<if test="permissionMethodLike == false">
+						and permission_method = #{sysPermissionCustom.permissionMethod}
+					</if>
+					<if test="permissionMethodLike == true">
+						and permission_method like "%"#{sysPermissionCustom.permissionMethod}"%"
+					</if>
+				</if>
+				<if test="sysPermissionCustom.permissionDescription != null">
+					<if test="permissionDescriptionLike == false">
+						and permission_description = #{sysPermissionCustom.permissionDescription}
+					</if>
+					<if test="permissionDescriptionLike == true">
+						and permission_description like "%"#{sysPermissionCustom.permissionDescription}"%"
+					</if>
+				</if>
+				<if test="sysPermissionCustom.permissionIcon != null">
+					<if test="permissionIconLike == false">
+						and permission_icon = #{sysPermissionCustom.permissionIcon}
+					</if>
+					<if test="permissionIconLike == true">
+						and permission_icon like "%"#{sysPermissionCustom.permissionIcon}"%"
+					</if>
+				</if>
+				<if test="sysPermissionCustom.parentModuleId != null">
+					and parent_module_id = #{sysPermissionCustom.parentModuleId}
+				</if>
+				<if test="sysPermissionCustom.showorder != null">
+					and showorder = #{sysPermissionCustom.showorder}
+				</if>
+				<if test="sysPermissionCustom.type != null">
+					<if test="typeLike == false">
+						and type = #{sysPermissionCustom.type}
+					</if>
+					<if test="typeLike == true">
+						and type like "%"#{sysPermissionCustom.type}"%"
+					</if>
+				</if>
+				<if test="sysPermissionCustom.isDisplay != null">
+					and is_display = #{sysPermissionCustom.isDisplay}
+				</if>
+				<if test="sysPermissionCustom.isEnable != null">
+					and is_enable = #{sysPermissionCustom.isEnable}
+				</if>
+				<if test="sysPermissionCustom.isActivation != null">
+					and is_activation = #{sysPermissionCustom.isActivation}
+				</if>
+				<if test="sysPermissionCustom.isDel != null">
+					and is_del = #{sysPermissionCustom.isDel}
+				</if>
+			</if>
+			<if test="permissionIdStart != null">
+				and permission_id &gt;= #{permissionIdStart}
+			</if>
+			<if test="permissionIdEnd != null">
+				and permission_id &lt; #{permissionIdEnd}
+			</if>
+			<if test="parentModuleIdStart != null">
+				and parent_module_id &gt;= #{parentModuleIdStart}
+			</if>
+			<if test="parentModuleIdEnd != null">
+				and parent_module_id &lt; #{parentModuleIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="permissionListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="permissionListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysPermissionCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="permissionSelector" />
+		<include refid="permissionListWhere" />
+		<include refid="permissionListOrder" />
+		<include refid="permissionListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysPermissionCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_permission
+		<include refid="permissionListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysPermissionCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="permissionSelector" />
+		<include refid="permissionListWhere" />
+		<include refid="permissionListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysPermissionCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		permission_id, permission_name, permission_code, permission_method,
+		permission_description, permission_icon, parent_module_id, showorder, type, is_display, is_enable, is_activation, is_del
+		from sys_permission
+		WHERE
+		permission_id
+		= #{permissionId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysPermissionCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="permissionSelector" />
+		WHERE
+		permission_id = #{sysPermissionCustom.permissionId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysPermissionCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		permission_id, permission_name, permission_code, permission_method, permission_description, permission_icon, parent_module_id, showorder, type,
+		is_display, is_enable, is_activation, is_del
+		from sys_permission
+		WHERE
+		permission_id in
+		<foreach collection="permissionIdList" separator="," item="permissionId" open="(" close=")">
+			#{permissionId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysPermissionListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="permissionSelector" />
+		WHERE
+		permission_id in
+		<foreach collection="permissionIdList" separator="," item="permissionId" open="(" close=")">
+			#{permissionId}
+		</foreach>
+		<include refid="permissionListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysPermissionCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo" useGeneratedKeys="true"
+		keyProperty="sysPermissionCustom.permissionId">
+		INSERT INTO sys_permission
+		<if test="sysPermissionCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysPermissionCustom.permissionId != null">
+					permission_id,
+				</if>
+				<if test="sysPermissionCustom.permissionName != null">
+					permission_name,
+				</if>
+				<if test="sysPermissionCustom.permissionCode != null">
+					permission_code,
+				</if>
+				<if test="sysPermissionCustom.permissionMethod != null">
+					permission_method,
+				</if>
+				<if test="sysPermissionCustom.permissionDescription != null">
+					permission_description,
+				</if>
+				<if test="sysPermissionCustom.permissionIcon != null">
+					permission_icon,
+				</if>
+				<if test="sysPermissionCustom.parentModuleId != null">
+					parent_module_id,
+				</if>
+				<if test="sysPermissionCustom.showorder != null">
+					showorder,
+				</if>
+				<if test="sysPermissionCustom.type != null">
+					type,
+				</if>
+				<if test="sysPermissionCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="sysPermissionCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="sysPermissionCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="sysPermissionCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysPermissionCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysPermissionCustom.permissionId != null">
+					#{sysPermissionCustom.permissionId},
+				</if>
+				<if test="sysPermissionCustom.permissionName != null">
+					#{sysPermissionCustom.permissionName},
+				</if>
+				<if test="sysPermissionCustom.permissionCode != null">
+					#{sysPermissionCustom.permissionCode},
+				</if>
+				<if test="sysPermissionCustom.permissionMethod != null">
+					#{sysPermissionCustom.permissionMethod},
+				</if>
+				<if test="sysPermissionCustom.permissionDescription != null">
+					#{sysPermissionCustom.permissionDescription},
+				</if>
+				<if test="sysPermissionCustom.permissionIcon != null">
+					#{sysPermissionCustom.permissionIcon},
+				</if>
+				<if test="sysPermissionCustom.parentModuleId != null">
+					#{sysPermissionCustom.parentModuleId},
+				</if>
+				<if test="sysPermissionCustom.showorder != null">
+					#{sysPermissionCustom.showorder},
+				</if>
+				<if test="sysPermissionCustom.type != null">
+					#{sysPermissionCustom.type},
+				</if>
+				<if test="sysPermissionCustom.isDisplay != null">
+					#{sysPermissionCustom.isDisplay},
+				</if>
+				<if test="sysPermissionCustom.isEnable != null">
+					#{sysPermissionCustom.isEnable},
+				</if>
+				<if test="sysPermissionCustom.isActivation != null">
+					#{sysPermissionCustom.isActivation},
+				</if>
+				<if test="sysPermissionCustom.isDel != null">
+					#{sysPermissionCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysPermissionCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionCustom" useGeneratedKeys="true" keyProperty="permissionId">
+		INSERT INTO sys_permission
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="permissionId != null">
+				permission_id,
+			</if>
+			<if test="permissionName != null">
+				permission_name,
+			</if>
+			<if test="permissionCode != null">
+				permission_code,
+			</if>
+			<if test="permissionMethod != null">
+				permission_method,
+			</if>
+			<if test="permissionDescription != null">
+				permission_description,
+			</if>
+			<if test="permissionIcon != null">
+				permission_icon,
+			</if>
+			<if test="parentModuleId != null">
+				parent_module_id,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="permissionId != null">
+				#{permissionId},
+			</if>
+			<if test="permissionName != null">
+				#{permissionName},
+			</if>
+			<if test="permissionCode != null">
+				#{permissionCode},
+			</if>
+			<if test="permissionMethod != null">
+				#{permissionMethod},
+			</if>
+			<if test="permissionDescription != null">
+				#{permissionDescription},
+			</if>
+			<if test="permissionIcon != null">
+				#{permissionIcon},
+			</if>
+			<if test="parentModuleId != null">
+				#{parentModuleId},
+			</if>
+			<if test="showorder != null">
+				#{showorder},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysPermissionCustomByKey" parameterType="Integer">
+		DELETE FROM sys_permission
+		WHERE
+		permission_id = #{permissionId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysPermissionCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_permission
+		WHERE
+		permission_id in
+		<foreach collection="permissionIdList" separator="," item="permissionId" open="(" close=")">
+			#{permissionId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysPermissionCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo">
+		UPDATE sys_permission
+		<set>
+			<if test="sysPermissionCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysPermissionCustom.permissionName != null">
+						permission_name = #{sysPermissionCustom.permissionName},
+					</if>
+					<if test="sysPermissionCustom.permissionCode != null">
+						permission_code = #{sysPermissionCustom.permissionCode},
+					</if>
+					<if test="sysPermissionCustom.permissionMethod != null">
+						permission_method = #{sysPermissionCustom.permissionMethod},
+					</if>
+					<if test="sysPermissionCustom.permissionDescription != null">
+						permission_description = #{sysPermissionCustom.permissionDescription},
+					</if>
+					<if test="sysPermissionCustom.permissionIcon != null">
+						permission_icon = #{sysPermissionCustom.permissionIcon},
+					</if>
+					<if test="sysPermissionCustom.parentModuleId != null">
+						parent_module_id = #{sysPermissionCustom.parentModuleId},
+					</if>
+					<if test="sysPermissionCustom.showorder != null">
+						showorder = #{sysPermissionCustom.showorder},
+					</if>
+					<if test="sysPermissionCustom.type != null">
+						type = #{sysPermissionCustom.type},
+					</if>
+					<if test="sysPermissionCustom.isDisplay != null">
+						is_display = #{sysPermissionCustom.isDisplay},
+					</if>
+					<if test="sysPermissionCustom.isEnable != null">
+						is_enable = #{sysPermissionCustom.isEnable},
+					</if>
+					<if test="sysPermissionCustom.isActivation != null">
+						is_activation = #{sysPermissionCustom.isActivation},
+					</if>
+					<if test="sysPermissionCustom.isDel != null">
+						is_del = #{sysPermissionCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		permission_id = #{sysPermissionCustom.permissionId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysPermissionCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysPermissionQueryVo">
+		UPDATE sys_permission
+		<set>
+			<if test="sysPermissionCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updatePermissionName == true">
+						permission_name = #{sysPermissionCustom.permissionName},
+					</if>
+					<if test="updatePermissionCode == true">
+						permission_code = #{sysPermissionCustom.permissionCode},
+					</if>
+					<if test="updatePermissionMethod == true">
+						permission_method = #{sysPermissionCustom.permissionMethod},
+					</if>
+					<if test="updatePermissionDescription == true">
+						permission_description = #{sysPermissionCustom.permissionDescription},
+					</if>
+					<if test="updatePermissionIcon == true">
+						permission_icon = #{sysPermissionCustom.permissionIcon},
+					</if>
+					<if test="updateParentModuleId == true">
+						parent_module_id = #{sysPermissionCustom.parentModuleId},
+					</if>
+					<if test="updateShoworder == true">
+						showorder = #{sysPermissionCustom.showorder},
+					</if>
+					<if test="updateType == true">
+						type = #{sysPermissionCustom.type},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{sysPermissionCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{sysPermissionCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{sysPermissionCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{sysPermissionCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		permission_id = #{sysPermissionCustom.permissionId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteSysPermissionCustomByKey" parameterType="Integer">
+		update sys_permission
+		set is_del = 0
+		WHERE
+		permission_id = #{permissionId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteSysPermissionCustomByKeyList" parameterType="ArrayList">
+		update sys_permission
+		set is_del = 0
+		WHERE
+		permission_id in
+		<foreach collection="permissionIdList" separator="," item="permissionId" open="(" close=")">
+			#{permissionId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

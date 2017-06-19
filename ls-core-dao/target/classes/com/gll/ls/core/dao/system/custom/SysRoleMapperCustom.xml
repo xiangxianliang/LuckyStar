@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysRoleMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysRoleCustom">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="role_description" property="roleDescription" jdbcType="VARCHAR" />
+		<result column="role_remark" property="roleRemark" jdbcType="VARCHAR" />
+		<result column="role_updatedate" property="roleUpdatedate" jdbcType="TIMESTAMP" />
+		<result column="is_permissions" property="isPermissions" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="roleSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			role_id, role_name, role_description, role_remark, role_updatedate, is_permissions, is_display, is_enable, is_activation, is_del
+		</if>
+		from sys_role
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="roleListWhere">
+		<where>
+			<if test="sysRoleCustom != null">
+				<if test="sysRoleCustom.roleId != null">
+					and role_id = #{sysRoleCustom.roleId}
+				</if>
+				<if test="sysRoleCustom.roleName != null">
+					<if test="roleNameLike == false">
+						and role_name = #{sysRoleCustom.roleName}
+					</if>
+					<if test="roleNameLike == true">
+						and role_name like "%"#{sysRoleCustom.roleName}"%"
+					</if>
+				</if>
+				<if test="sysRoleCustom.roleDescription != null">
+					<if test="roleDescriptionLike == false">
+						and role_description = #{sysRoleCustom.roleDescription}
+					</if>
+					<if test="roleDescriptionLike == true">
+						and role_description like "%"#{sysRoleCustom.roleDescription}"%"
+					</if>
+				</if>
+				<if test="sysRoleCustom.roleRemark != null">
+					<if test="roleRemarkLike == false">
+						and role_remark = #{sysRoleCustom.roleRemark}
+					</if>
+					<if test="roleRemarkLike == true">
+						and role_remark like "%"#{sysRoleCustom.roleRemark}"%"
+					</if>
+				</if>
+				<if test="sysRoleCustom.roleUpdatedate != null">
+					and role_updatedate = #{sysRoleCustom.roleUpdatedate}
+				</if>
+				<if test="sysRoleCustom.isPermissions != null">
+					and is_permissions = #{sysRoleCustom.isPermissions}
+				</if>
+				<if test="sysRoleCustom.isDisplay != null">
+					and is_display = #{sysRoleCustom.isDisplay}
+				</if>
+				<if test="sysRoleCustom.isEnable != null">
+					and is_enable = #{sysRoleCustom.isEnable}
+				</if>
+				<if test="sysRoleCustom.isActivation != null">
+					and is_activation = #{sysRoleCustom.isActivation}
+				</if>
+				<if test="sysRoleCustom.isDel != null">
+					and is_del = #{sysRoleCustom.isDel}
+				</if>
+			</if>
+			<if test="roleIdStart != null">
+				and role_id &gt;= #{roleIdStart}
+			</if>
+			<if test="roleIdEnd != null">
+				and role_id &lt; #{roleIdEnd}
+			</if>
+			<if test="roleUpdatedateStart != null">
+				and role_updatedate &gt;= #{roleUpdatedateStart}
+			</if>
+			<if test="roleUpdatedateEnd != null">
+				and role_updatedate &lt; #{roleUpdatedateEnd}
+			</if>
+			<if test="isPermissionsStart != null">
+				and is_permissions &gt;= #{isPermissionsStart}
+			</if>
+			<if test="isPermissionsEnd != null">
+				and is_permissions &lt; #{isPermissionsEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="roleListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="roleListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysRoleCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleSelector" />
+		<include refid="roleListWhere" />
+		<include refid="roleListOrder" />
+		<include refid="roleListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysRoleCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_role
+		<include refid="roleListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysRoleCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleSelector" />
+		<include refid="roleListWhere" />
+		<include refid="roleListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysRoleCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		role_id, role_name, role_description, role_remark, role_updatedate,
+		is_permissions, is_display, is_enable, is_activation, is_del
+		from sys_role
+		WHERE
+		role_id = #{roleId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysRoleCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleSelector" />
+		WHERE
+		role_id = #{sysRoleCustom.roleId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysRoleCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		role_id, role_name, role_description, role_remark, role_updatedate, is_permissions, is_display, is_enable, is_activation, is_del
+		from sys_role
+		WHERE
+		role_id in
+		<foreach collection="roleIdList" separator="," item="roleId" open="(" close=")">
+			#{roleId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysRoleListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleSelector" />
+		WHERE
+		role_id in
+		<foreach collection="roleIdList" separator="," item="roleId" open="(" close=")">
+			#{roleId}
+		</foreach>
+		<include refid="roleListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysRoleCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo" useGeneratedKeys="true" keyProperty="sysRoleCustom.roleId">
+		INSERT INTO sys_role
+		<if test="sysRoleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysRoleCustom.roleId != null">
+					role_id,
+				</if>
+				<if test="sysRoleCustom.roleName != null">
+					role_name,
+				</if>
+				<if test="sysRoleCustom.roleDescription != null">
+					role_description,
+				</if>
+				<if test="sysRoleCustom.roleRemark != null">
+					role_remark,
+				</if>
+				<if test="sysRoleCustom.roleUpdatedate != null">
+					role_updatedate,
+				</if>
+				<if test="sysRoleCustom.isPermissions != null">
+					is_permissions,
+				</if>
+				<if test="sysRoleCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="sysRoleCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="sysRoleCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="sysRoleCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysRoleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysRoleCustom.roleId != null">
+					#{sysRoleCustom.roleId},
+				</if>
+				<if test="sysRoleCustom.roleName != null">
+					#{sysRoleCustom.roleName},
+				</if>
+				<if test="sysRoleCustom.roleDescription != null">
+					#{sysRoleCustom.roleDescription},
+				</if>
+				<if test="sysRoleCustom.roleRemark != null">
+					#{sysRoleCustom.roleRemark},
+				</if>
+				<if test="sysRoleCustom.roleUpdatedate != null">
+					#{sysRoleCustom.roleUpdatedate},
+				</if>
+				<if test="sysRoleCustom.isPermissions != null">
+					#{sysRoleCustom.isPermissions},
+				</if>
+				<if test="sysRoleCustom.isDisplay != null">
+					#{sysRoleCustom.isDisplay},
+				</if>
+				<if test="sysRoleCustom.isEnable != null">
+					#{sysRoleCustom.isEnable},
+				</if>
+				<if test="sysRoleCustom.isActivation != null">
+					#{sysRoleCustom.isActivation},
+				</if>
+				<if test="sysRoleCustom.isDel != null">
+					#{sysRoleCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysRoleCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleCustom" useGeneratedKeys="true" keyProperty="roleId">
+		INSERT INTO sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+			<if test="roleDescription != null">
+				role_description,
+			</if>
+			<if test="roleRemark != null">
+				role_remark,
+			</if>
+			<if test="roleUpdatedate != null">
+				role_updatedate,
+			</if>
+			<if test="isPermissions != null">
+				is_permissions,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId},
+			</if>
+			<if test="roleName != null">
+				#{roleName},
+			</if>
+			<if test="roleDescription != null">
+				#{roleDescription},
+			</if>
+			<if test="roleRemark != null">
+				#{roleRemark},
+			</if>
+			<if test="roleUpdatedate != null">
+				#{roleUpdatedate},
+			</if>
+			<if test="isPermissions != null">
+				#{isPermissions},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysRoleCustomByKey" parameterType="Integer">
+		DELETE FROM sys_role
+		WHERE
+		role_id = #{roleId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysRoleCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_role
+		WHERE
+		role_id in
+		<foreach collection="roleIdList" separator="," item="roleId" open="(" close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysRoleCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo">
+		UPDATE sys_role
+		<set>
+			<if test="sysRoleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysRoleCustom.roleName != null">
+						role_name = #{sysRoleCustom.roleName},
+					</if>
+					<if test="sysRoleCustom.roleDescription != null">
+						role_description = #{sysRoleCustom.roleDescription},
+					</if>
+					<if test="sysRoleCustom.roleRemark != null">
+						role_remark = #{sysRoleCustom.roleRemark},
+					</if>
+					<if test="sysRoleCustom.roleUpdatedate != null">
+						role_updatedate = #{sysRoleCustom.roleUpdatedate},
+					</if>
+					<if test="sysRoleCustom.isPermissions != null">
+						is_permissions = #{sysRoleCustom.isPermissions},
+					</if>
+					<if test="sysRoleCustom.isDisplay != null">
+						is_display = #{sysRoleCustom.isDisplay},
+					</if>
+					<if test="sysRoleCustom.isEnable != null">
+						is_enable = #{sysRoleCustom.isEnable},
+					</if>
+					<if test="sysRoleCustom.isActivation != null">
+						is_activation = #{sysRoleCustom.isActivation},
+					</if>
+					<if test="sysRoleCustom.isDel != null">
+						is_del = #{sysRoleCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		role_id = #{sysRoleCustom.roleId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysRoleCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleQueryVo">
+		UPDATE sys_role
+		<set>
+			<if test="sysRoleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateRoleName == true">
+						role_name = #{sysRoleCustom.roleName},
+					</if>
+					<if test="updateRoleDescription == true">
+						role_description = #{sysRoleCustom.roleDescription},
+					</if>
+					<if test="updateRoleRemark == true">
+						role_remark = #{sysRoleCustom.roleRemark},
+					</if>
+					<if test="updateRoleUpdatedate == true">
+						role_updatedate = #{sysRoleCustom.roleUpdatedate},
+					</if>
+					<if test="updateIsPermissions == true">
+						is_permissions = #{sysRoleCustom.isPermissions},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{sysRoleCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{sysRoleCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{sysRoleCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{sysRoleCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		role_id = #{sysRoleCustom.roleId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteSysRoleCustomByKey" parameterType="Integer">
+		update sys_role
+		set is_del = 0
+		WHERE
+		role_id = #{roleId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteSysRoleCustomByKeyList" parameterType="ArrayList">
+		update sys_role
+		set is_del = 0
+		WHERE
+		role_id in
+		<foreach collection="roleIdList" separator="," item="roleId" open="(" close=")">
+			#{roleId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

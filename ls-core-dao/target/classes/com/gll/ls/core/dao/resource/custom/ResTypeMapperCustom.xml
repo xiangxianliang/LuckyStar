@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.resource.custom.ResTypeMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.resource.vo.ResTypeCustom">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="type_name_pc" property="typeNamePc" jdbcType="VARCHAR" />
+		<result column="type_description" property="typeDescription" jdbcType="VARCHAR" />
+		<result column="type_remark" property="typeRemark" jdbcType="VARCHAR" />
+		<result column="type_icon" property="typeIcon" jdbcType="VARCHAR" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="is_seaf" property="isSeaf" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="is_select" property="isSelect" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="typeSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			type_id, type_name, type_name_pc, type_description, type_remark, type_icon, showorder, is_seaf, parent_id, is_select, is_display, is_enable,
+			is_activation, is_del
+		</if>
+		from res_type
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="typeListWhere">
+		<where>
+			<if test="resTypeCustom != null">
+				<if test="resTypeCustom.typeId != null">
+					and type_id = #{resTypeCustom.typeId}
+				</if>
+				<if test="resTypeCustom.typeName != null">
+					<if test="typeNameLike == false">
+						and type_name = #{resTypeCustom.typeName}
+					</if>
+					<if test="typeNameLike == true">
+						and type_name like "%"#{resTypeCustom.typeName}"%"
+					</if>
+				</if>
+				<if test="resTypeCustom.typeNamePc != null">
+					<if test="typeNamePcLike == false">
+						and type_name_pc = #{resTypeCustom.typeNamePc}
+					</if>
+					<if test="typeNamePcLike == true">
+						and type_name_pc like "%"#{resTypeCustom.typeNamePc}"%"
+					</if>
+				</if>
+				<if test="resTypeCustom.typeDescription != null">
+					<if test="typeDescriptionLike == false">
+						and type_description = #{resTypeCustom.typeDescription}
+					</if>
+					<if test="typeDescriptionLike == true">
+						and type_description like "%"#{resTypeCustom.typeDescription}"%"
+					</if>
+				</if>
+				<if test="resTypeCustom.typeRemark != null">
+					<if test="typeRemarkLike == false">
+						and type_remark = #{resTypeCustom.typeRemark}
+					</if>
+					<if test="typeRemarkLike == true">
+						and type_remark like "%"#{resTypeCustom.typeRemark}"%"
+					</if>
+				</if>
+				<if test="resTypeCustom.typeIcon != null">
+					<if test="typeIconLike == false">
+						and type_icon = #{resTypeCustom.typeIcon}
+					</if>
+					<if test="typeIconLike == true">
+						and type_icon like "%"#{resTypeCustom.typeIcon}"%"
+					</if>
+				</if>
+				<if test="resTypeCustom.showorder != null">
+					and showorder = #{resTypeCustom.showorder}
+				</if>
+				<if test="resTypeCustom.isSeaf != null">
+					and is_seaf = #{resTypeCustom.isSeaf}
+				</if>
+				<if test="resTypeCustom.parentId != null">
+					and parent_id = #{resTypeCustom.parentId}
+				</if>
+				<if test="resTypeCustom.isSelect != null">
+					and is_select = #{resTypeCustom.isSelect}
+				</if>
+				<if test="resTypeCustom.isDisplay != null">
+					and is_display = #{resTypeCustom.isDisplay}
+				</if>
+				<if test="resTypeCustom.isEnable != null">
+					and is_enable = #{resTypeCustom.isEnable}
+				</if>
+				<if test="resTypeCustom.isActivation != null">
+					and is_activation = #{resTypeCustom.isActivation}
+				</if>
+				<if test="resTypeCustom.isDel != null">
+					and is_del = #{resTypeCustom.isDel}
+				</if>
+			</if>
+			<if test="typeIdStart != null">
+				and type_id &gt;= #{typeIdStart}
+			</if>
+			<if test="typeIdEnd != null">
+				and type_id &lt; #{typeIdEnd}
+			</if>
+			<if test="parentIdStart != null">
+				and parent_id &gt;= #{parentIdStart}
+			</if>
+			<if test="parentIdEnd != null">
+				and parent_id &lt; #{parentIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="typeListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="typeListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getResTypeCustomListWithPage" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="typeSelector" />
+		<include refid="typeListWhere" />
+		<include refid="typeListOrder" />
+		<include refid="typeListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getResTypeCustomCount" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo" resultType="Integer">
+		SELECT count(1) FROM res_type
+		<include refid="typeListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getResTypeCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="typeSelector" />
+		<include refid="typeListWhere" />
+		<include refid="typeListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getResTypeCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		type_id, type_name, type_name_pc, type_description, type_remark, type_icon,
+		showorder, is_seaf, parent_id, is_select, is_display, is_enable, is_activation, is_del
+		from res_type
+		WHERE
+		type_id = #{typeId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getResTypeCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="typeSelector" />
+		WHERE
+		type_id = #{resTypeCustom.typeId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getResTypeCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		type_id, type_name, type_name_pc, type_description, type_remark, type_icon, showorder, is_seaf, parent_id, is_select, is_display, is_enable,
+		is_activation, is_del
+		from res_type
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getResTypeListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="typeSelector" />
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+		<include refid="typeListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addResTypeCustomByQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo" useGeneratedKeys="true" keyProperty="resTypeCustom.typeId">
+		INSERT INTO res_type
+		<if test="resTypeCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="resTypeCustom.typeId != null">
+					type_id,
+				</if>
+				<if test="resTypeCustom.typeName != null">
+					type_name,
+				</if>
+				<if test="resTypeCustom.typeNamePc != null">
+					type_name_pc,
+				</if>
+				<if test="resTypeCustom.typeDescription != null">
+					type_description,
+				</if>
+				<if test="resTypeCustom.typeRemark != null">
+					type_remark,
+				</if>
+				<if test="resTypeCustom.typeIcon != null">
+					type_icon,
+				</if>
+				<if test="resTypeCustom.showorder != null">
+					showorder,
+				</if>
+				<if test="resTypeCustom.isSeaf != null">
+					is_seaf,
+				</if>
+				<if test="resTypeCustom.parentId != null">
+					parent_id,
+				</if>
+				<if test="resTypeCustom.isSelect != null">
+					is_select,
+				</if>
+				<if test="resTypeCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="resTypeCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="resTypeCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="resTypeCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="resTypeCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="resTypeCustom.typeId != null">
+					#{resTypeCustom.typeId},
+				</if>
+				<if test="resTypeCustom.typeName != null">
+					#{resTypeCustom.typeName},
+				</if>
+				<if test="resTypeCustom.typeNamePc != null">
+					#{resTypeCustom.typeNamePc},
+				</if>
+				<if test="resTypeCustom.typeDescription != null">
+					#{resTypeCustom.typeDescription},
+				</if>
+				<if test="resTypeCustom.typeRemark != null">
+					#{resTypeCustom.typeRemark},
+				</if>
+				<if test="resTypeCustom.typeIcon != null">
+					#{resTypeCustom.typeIcon},
+				</if>
+				<if test="resTypeCustom.showorder != null">
+					#{resTypeCustom.showorder},
+				</if>
+				<if test="resTypeCustom.isSeaf != null">
+					#{resTypeCustom.isSeaf},
+				</if>
+				<if test="resTypeCustom.parentId != null">
+					#{resTypeCustom.parentId},
+				</if>
+				<if test="resTypeCustom.isSelect != null">
+					#{resTypeCustom.isSelect},
+				</if>
+				<if test="resTypeCustom.isDisplay != null">
+					#{resTypeCustom.isDisplay},
+				</if>
+				<if test="resTypeCustom.isEnable != null">
+					#{resTypeCustom.isEnable},
+				</if>
+				<if test="resTypeCustom.isActivation != null">
+					#{resTypeCustom.isActivation},
+				</if>
+				<if test="resTypeCustom.isDel != null">
+					#{resTypeCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addResTypeCustomByCustom" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeCustom" useGeneratedKeys="true" keyProperty="typeId">
+		INSERT INTO res_type
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="typeName != null">
+				type_name,
+			</if>
+			<if test="typeNamePc != null">
+				type_name_pc,
+			</if>
+			<if test="typeDescription != null">
+				type_description,
+			</if>
+			<if test="typeRemark != null">
+				type_remark,
+			</if>
+			<if test="typeIcon != null">
+				type_icon,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="isSeaf != null">
+				is_seaf,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="isSelect != null">
+				is_select,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				#{typeId},
+			</if>
+			<if test="typeName != null">
+				#{typeName},
+			</if>
+			<if test="typeNamePc != null">
+				#{typeNamePc},
+			</if>
+			<if test="typeDescription != null">
+				#{typeDescription},
+			</if>
+			<if test="typeRemark != null">
+				#{typeRemark},
+			</if>
+			<if test="typeIcon != null">
+				#{typeIcon},
+			</if>
+			<if test="showorder != null">
+				#{showorder},
+			</if>
+			<if test="isSeaf != null">
+				#{isSeaf},
+			</if>
+			<if test="parentId != null">
+				#{parentId},
+			</if>
+			<if test="isSelect != null">
+				#{isSelect},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteResTypeCustomByKey" parameterType="Integer">
+		DELETE FROM res_type
+		WHERE
+		type_id = #{typeId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteResTypeCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM res_type
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateResTypeCustomByKeySelective" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo">
+		UPDATE res_type
+		<set>
+			<if test="resTypeCustom != null">
+				<trim suffixOverrides=",">
+					<if test="resTypeCustom.typeName != null">
+						type_name = #{resTypeCustom.typeName},
+					</if>
+					<if test="resTypeCustom.typeNamePc != null">
+						type_name_pc = #{resTypeCustom.typeNamePc},
+					</if>
+					<if test="resTypeCustom.typeDescription != null">
+						type_description = #{resTypeCustom.typeDescription},
+					</if>
+					<if test="resTypeCustom.typeRemark != null">
+						type_remark = #{resTypeCustom.typeRemark},
+					</if>
+					<if test="resTypeCustom.typeIcon != null">
+						type_icon = #{resTypeCustom.typeIcon},
+					</if>
+					<if test="resTypeCustom.showorder != null">
+						showorder = #{resTypeCustom.showorder},
+					</if>
+					<if test="resTypeCustom.isSeaf != null">
+						is_seaf = #{resTypeCustom.isSeaf},
+					</if>
+					<if test="resTypeCustom.parentId != null">
+						parent_id = #{resTypeCustom.parentId},
+					</if>
+					<if test="resTypeCustom.isSelect != null">
+						is_select = #{resTypeCustom.isSelect},
+					</if>
+					<if test="resTypeCustom.isDisplay != null">
+						is_display = #{resTypeCustom.isDisplay},
+					</if>
+					<if test="resTypeCustom.isEnable != null">
+						is_enable = #{resTypeCustom.isEnable},
+					</if>
+					<if test="resTypeCustom.isActivation != null">
+						is_activation = #{resTypeCustom.isActivation},
+					</if>
+					<if test="resTypeCustom.isDel != null">
+						is_del = #{resTypeCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		type_id = #{resTypeCustom.typeId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateResTypeCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.resource.vo.ResTypeQueryVo">
+		UPDATE res_type
+		<set>
+			<if test="resTypeCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateTypeName == true">
+						type_name = #{resTypeCustom.typeName},
+					</if>
+					<if test="updateTypeNamePc == true">
+						type_name_pc = #{resTypeCustom.typeNamePc},
+					</if>
+					<if test="updateTypeDescription == true">
+						type_description = #{resTypeCustom.typeDescription},
+					</if>
+					<if test="updateTypeRemark == true">
+						type_remark = #{resTypeCustom.typeRemark},
+					</if>
+					<if test="updateTypeIcon == true">
+						type_icon = #{resTypeCustom.typeIcon},
+					</if>
+					<if test="updateShoworder == true">
+						showorder = #{resTypeCustom.showorder},
+					</if>
+					<if test="updateIsSeaf == true">
+						is_seaf = #{resTypeCustom.isSeaf},
+					</if>
+					<if test="updateParentId == true">
+						parent_id = #{resTypeCustom.parentId},
+					</if>
+					<if test="updateIsSelect == true">
+						is_select = #{resTypeCustom.isSelect},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{resTypeCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{resTypeCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{resTypeCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{resTypeCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		type_id = #{resTypeCustom.typeId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteResTypeCustomByKey" parameterType="Integer">
+		update res_type
+		set is_del = 0
+		WHERE
+		type_id = #{typeId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteResTypeCustomByKeyList" parameterType="ArrayList">
+		update res_type
+		set is_del = 0
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

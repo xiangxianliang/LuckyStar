@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysDictTypeMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysDictTypeCustom">
+		<id column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="type_description" property="typeDescription" jdbcType="VARCHAR" />
+		<result column="type_remark" property="typeRemark" jdbcType="VARCHAR" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="codelength" property="codelength" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="is_seaf" property="isSeaf" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="dictTypeSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			type_id, type_name, type_description, type_remark, showorder, codelength, parent_id, is_seaf, is_display, is_enable, is_activation, is_del
+		</if>
+		from sys_dict_type
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="dictTypeListWhere">
+		<where>
+			<if test="sysDictTypeCustom != null">
+				<if test="sysDictTypeCustom.typeId != null">
+					and type_id = #{sysDictTypeCustom.typeId}
+				</if>
+				<if test="sysDictTypeCustom.typeName != null">
+					<if test="typeNameLike == false">
+						and type_name = #{sysDictTypeCustom.typeName}
+					</if>
+					<if test="typeNameLike == true">
+						and type_name like "%"#{sysDictTypeCustom.typeName}"%"
+					</if>
+				</if>
+				<if test="sysDictTypeCustom.typeDescription != null">
+					<if test="typeDescriptionLike == false">
+						and type_description = #{sysDictTypeCustom.typeDescription}
+					</if>
+					<if test="typeDescriptionLike == true">
+						and type_description like "%"#{sysDictTypeCustom.typeDescription}"%"
+					</if>
+				</if>
+				<if test="sysDictTypeCustom.typeRemark != null">
+					<if test="typeRemarkLike == false">
+						and type_remark = #{sysDictTypeCustom.typeRemark}
+					</if>
+					<if test="typeRemarkLike == true">
+						and type_remark like "%"#{sysDictTypeCustom.typeRemark}"%"
+					</if>
+				</if>
+				<if test="sysDictTypeCustom.showorder != null">
+					and showorder = #{sysDictTypeCustom.showorder}
+				</if>
+				<if test="sysDictTypeCustom.codelength != null">
+					<if test="codelengthLike == false">
+						and codelength = #{sysDictTypeCustom.codelength}
+					</if>
+					<if test="codelengthLike == true">
+						and codelength like "%"#{sysDictTypeCustom.codelength}"%"
+					</if>
+				</if>
+				<if test="sysDictTypeCustom.parentId != null">
+					and parent_id = #{sysDictTypeCustom.parentId}
+				</if>
+				<if test="sysDictTypeCustom.isSeaf != null">
+					and is_seaf = #{sysDictTypeCustom.isSeaf}
+				</if>
+				<if test="sysDictTypeCustom.isDisplay != null">
+					and is_display = #{sysDictTypeCustom.isDisplay}
+				</if>
+				<if test="sysDictTypeCustom.isEnable != null">
+					and is_enable = #{sysDictTypeCustom.isEnable}
+				</if>
+				<if test="sysDictTypeCustom.isActivation != null">
+					and is_activation = #{sysDictTypeCustom.isActivation}
+				</if>
+				<if test="sysDictTypeCustom.isDel != null">
+					and is_del = #{sysDictTypeCustom.isDel}
+				</if>
+			</if>
+			<if test="typeIdStart != null">
+				and type_id &gt;= #{typeIdStart}
+			</if>
+			<if test="typeIdEnd != null">
+				and type_id &lt; #{typeIdEnd}
+			</if>
+			<if test="parentIdStart != null">
+				and parent_id &gt;= #{parentIdStart}
+			</if>
+			<if test="parentIdEnd != null">
+				and parent_id &lt; #{parentIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="dictTypeListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="dictTypeListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysDictTypeCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="dictTypeSelector" />
+		<include refid="dictTypeListWhere" />
+		<include refid="dictTypeListOrder" />
+		<include refid="dictTypeListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysDictTypeCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_dict_type
+		<include refid="dictTypeListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysDictTypeCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="dictTypeSelector" />
+		<include refid="dictTypeListWhere" />
+		<include refid="dictTypeListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysDictTypeCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		type_id, type_name, type_description, type_remark, showorder, codelength,
+		parent_id, is_seaf, is_display, is_enable, is_activation, is_del
+		from sys_dict_type
+		WHERE
+		type_id = #{typeId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysDictTypeCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="dictTypeSelector" />
+		WHERE
+		type_id = #{sysDictTypeCustom.typeId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysDictTypeCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		type_id, type_name, type_description, type_remark, showorder, codelength, parent_id, is_seaf, is_display, is_enable, is_activation, is_del
+		from
+		sys_dict_type
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysDictTypeListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo" resultMap="BaseResultMap">
+		<include refid="dictTypeSelector" />
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+		<include refid="dictTypeListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysDictTypeCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo" useGeneratedKeys="true" keyProperty="sysDictTypeCustom.typeId">
+		INSERT INTO sys_dict_type
+		<if test="sysDictTypeCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysDictTypeCustom.typeId != null">
+					type_id,
+				</if>
+				<if test="sysDictTypeCustom.typeName != null">
+					type_name,
+				</if>
+				<if test="sysDictTypeCustom.typeDescription != null">
+					type_description,
+				</if>
+				<if test="sysDictTypeCustom.typeRemark != null">
+					type_remark,
+				</if>
+				<if test="sysDictTypeCustom.showorder != null">
+					showorder,
+				</if>
+				<if test="sysDictTypeCustom.codelength != null">
+					codelength,
+				</if>
+				<if test="sysDictTypeCustom.parentId != null">
+					parent_id,
+				</if>
+				<if test="sysDictTypeCustom.isSeaf != null">
+					is_seaf,
+				</if>
+				<if test="sysDictTypeCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="sysDictTypeCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="sysDictTypeCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="sysDictTypeCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysDictTypeCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysDictTypeCustom.typeId != null">
+					#{sysDictTypeCustom.typeId},
+				</if>
+				<if test="sysDictTypeCustom.typeName != null">
+					#{sysDictTypeCustom.typeName},
+				</if>
+				<if test="sysDictTypeCustom.typeDescription != null">
+					#{sysDictTypeCustom.typeDescription},
+				</if>
+				<if test="sysDictTypeCustom.typeRemark != null">
+					#{sysDictTypeCustom.typeRemark},
+				</if>
+				<if test="sysDictTypeCustom.showorder != null">
+					#{sysDictTypeCustom.showorder},
+				</if>
+				<if test="sysDictTypeCustom.codelength != null">
+					#{sysDictTypeCustom.codelength},
+				</if>
+				<if test="sysDictTypeCustom.parentId != null">
+					#{sysDictTypeCustom.parentId},
+				</if>
+				<if test="sysDictTypeCustom.isSeaf != null">
+					#{sysDictTypeCustom.isSeaf},
+				</if>
+				<if test="sysDictTypeCustom.isDisplay != null">
+					#{sysDictTypeCustom.isDisplay},
+				</if>
+				<if test="sysDictTypeCustom.isEnable != null">
+					#{sysDictTypeCustom.isEnable},
+				</if>
+				<if test="sysDictTypeCustom.isActivation != null">
+					#{sysDictTypeCustom.isActivation},
+				</if>
+				<if test="sysDictTypeCustom.isDel != null">
+					#{sysDictTypeCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysDictTypeCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeCustom" useGeneratedKeys="true" keyProperty="typeId">
+		INSERT INTO sys_dict_type
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="typeName != null">
+				type_name,
+			</if>
+			<if test="typeDescription != null">
+				type_description,
+			</if>
+			<if test="typeRemark != null">
+				type_remark,
+			</if>
+			<if test="showorder != null">
+				showorder,
+			</if>
+			<if test="codelength != null">
+				codelength,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="isSeaf != null">
+				is_seaf,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				#{typeId},
+			</if>
+			<if test="typeName != null">
+				#{typeName},
+			</if>
+			<if test="typeDescription != null">
+				#{typeDescription},
+			</if>
+			<if test="typeRemark != null">
+				#{typeRemark},
+			</if>
+			<if test="showorder != null">
+				#{showorder},
+			</if>
+			<if test="codelength != null">
+				#{codelength},
+			</if>
+			<if test="parentId != null">
+				#{parentId},
+			</if>
+			<if test="isSeaf != null">
+				#{isSeaf},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysDictTypeCustomByKey" parameterType="Integer">
+		DELETE FROM sys_dict_type
+		WHERE
+		type_id = #{typeId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysDictTypeCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_dict_type
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysDictTypeCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo">
+		UPDATE sys_dict_type
+		<set>
+			<if test="sysDictTypeCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysDictTypeCustom.typeName != null">
+						type_name = #{sysDictTypeCustom.typeName},
+					</if>
+					<if test="sysDictTypeCustom.typeDescription != null">
+						type_description = #{sysDictTypeCustom.typeDescription},
+					</if>
+					<if test="sysDictTypeCustom.typeRemark != null">
+						type_remark = #{sysDictTypeCustom.typeRemark},
+					</if>
+					<if test="sysDictTypeCustom.showorder != null">
+						showorder = #{sysDictTypeCustom.showorder},
+					</if>
+					<if test="sysDictTypeCustom.codelength != null">
+						codelength = #{sysDictTypeCustom.codelength},
+					</if>
+					<if test="sysDictTypeCustom.parentId != null">
+						parent_id = #{sysDictTypeCustom.parentId},
+					</if>
+					<if test="sysDictTypeCustom.isSeaf != null">
+						is_seaf = #{sysDictTypeCustom.isSeaf},
+					</if>
+					<if test="sysDictTypeCustom.isDisplay != null">
+						is_display = #{sysDictTypeCustom.isDisplay},
+					</if>
+					<if test="sysDictTypeCustom.isEnable != null">
+						is_enable = #{sysDictTypeCustom.isEnable},
+					</if>
+					<if test="sysDictTypeCustom.isActivation != null">
+						is_activation = #{sysDictTypeCustom.isActivation},
+					</if>
+					<if test="sysDictTypeCustom.isDel != null">
+						is_del = #{sysDictTypeCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		type_id = #{sysDictTypeCustom.typeId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysDictTypeCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysDictTypeQueryVo">
+		UPDATE sys_dict_type
+		<set>
+			<if test="sysDictTypeCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateTypeName == true">
+						type_name = #{sysDictTypeCustom.typeName},
+					</if>
+					<if test="updateTypeDescription == true">
+						type_description = #{sysDictTypeCustom.typeDescription},
+					</if>
+					<if test="updateTypeRemark == true">
+						type_remark = #{sysDictTypeCustom.typeRemark},
+					</if>
+					<if test="updateShoworder == true">
+						showorder = #{sysDictTypeCustom.showorder},
+					</if>
+					<if test="updateCodelength == true">
+						codelength = #{sysDictTypeCustom.codelength},
+					</if>
+					<if test="updateParentId == true">
+						parent_id = #{sysDictTypeCustom.parentId},
+					</if>
+					<if test="updateIsSeaf == true">
+						is_seaf = #{sysDictTypeCustom.isSeaf},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{sysDictTypeCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{sysDictTypeCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{sysDictTypeCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{sysDictTypeCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		type_id = #{sysDictTypeCustom.typeId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteSysDictTypeCustomByKey" parameterType="Integer">
+		update sys_dict_type
+		set is_del = 0
+		WHERE
+		type_id = #{typeId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteSysDictTypeCustomByKeyList" parameterType="ArrayList">
+		update sys_dict_type
+		set is_del = 0
+		WHERE
+		type_id in
+		<foreach collection="typeIdList" separator="," item="typeId" open="(" close=")">
+			#{typeId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

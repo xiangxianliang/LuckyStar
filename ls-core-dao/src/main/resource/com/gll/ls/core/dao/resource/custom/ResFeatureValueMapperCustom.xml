@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.resource.custom.ResFeatureValueMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.resource.vo.ResFeatureValueCustom">
+		<id column="feature_value_id" property="featureValueId" jdbcType="INTEGER" />
+		<result column="feature_value_name" property="featureValueName" jdbcType="VARCHAR" />
+		<result column="feature_value_value" property="featureValueValue" jdbcType="VARCHAR" />
+		<result column="feature_id" property="featureId" jdbcType="INTEGER" />
+		<result column="is_display_name" property="isDisplayName" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="featureValueSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			feature_value_id, feature_value_name, feature_value_value, feature_id, is_display_name, is_display, is_enable, is_activation, is_del
+		</if>
+		from res_feature_value
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="featureValueListWhere">
+		<where>
+			<if test="resFeatureValueCustom != null">
+				<if test="resFeatureValueCustom.featureValueId != null">
+					and feature_value_id = #{resFeatureValueCustom.featureValueId}
+				</if>
+				<if test="resFeatureValueCustom.featureValueName != null">
+					<if test="featureValueNameLike == false">
+						and feature_value_name = #{resFeatureValueCustom.featureValueName}
+					</if>
+					<if test="featureValueNameLike == true">
+						and feature_value_name like "%"#{resFeatureValueCustom.featureValueName}"%"
+					</if>
+				</if>
+				<if test="resFeatureValueCustom.featureValueValue != null">
+					<if test="featureValueValueLike == false">
+						and feature_value_value = #{resFeatureValueCustom.featureValueValue}
+					</if>
+					<if test="featureValueValueLike == true">
+						and feature_value_value like "%"#{resFeatureValueCustom.featureValueValue}"%"
+					</if>
+				</if>
+				<if test="resFeatureValueCustom.featureId != null">
+					and feature_id = #{resFeatureValueCustom.featureId}
+				</if>
+				<if test="resFeatureValueCustom.isDisplayName != null">
+					and is_display_name = #{resFeatureValueCustom.isDisplayName}
+				</if>
+				<if test="resFeatureValueCustom.isDisplay != null">
+					and is_display = #{resFeatureValueCustom.isDisplay}
+				</if>
+				<if test="resFeatureValueCustom.isEnable != null">
+					and is_enable = #{resFeatureValueCustom.isEnable}
+				</if>
+				<if test="resFeatureValueCustom.isActivation != null">
+					and is_activation = #{resFeatureValueCustom.isActivation}
+				</if>
+				<if test="resFeatureValueCustom.isDel != null">
+					and is_del = #{resFeatureValueCustom.isDel}
+				</if>
+			</if>
+			<if test="featureValueIdStart != null">
+				and feature_value_id &gt;= #{featureValueIdStart}
+			</if>
+			<if test="featureValueIdEnd != null">
+				and feature_value_id &lt; #{featureValueIdEnd}
+			</if>
+			<if test="featureIdStart != null">
+				and feature_id &gt;= #{featureIdStart}
+			</if>
+			<if test="featureIdEnd != null">
+				and feature_id &lt; #{featureIdEnd}
+			</if>
+			<if test="isDisplayNameStart != null">
+				and is_display_name &gt;= #{isDisplayNameStart}
+			</if>
+			<if test="isDisplayNameEnd != null">
+				and is_display_name &lt; #{isDisplayNameEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="featureValueListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="featureValueListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getResFeatureValueCustomListWithPage" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo" resultMap="BaseResultMap">
+		<include refid="featureValueSelector" />
+		<include refid="featureValueListWhere" />
+		<include refid="featureValueListOrder" />
+		<include refid="featureValueListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getResFeatureValueCustomCount" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo" resultType="Integer">
+		SELECT count(1) FROM res_feature_value
+		<include refid="featureValueListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getResFeatureValueCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo" resultMap="BaseResultMap">
+		<include refid="featureValueSelector" />
+		<include refid="featureValueListWhere" />
+		<include refid="featureValueListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getResFeatureValueCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		feature_value_id, feature_value_name, feature_value_value,
+		feature_id, is_display_name, is_display, is_enable, is_activation, is_del
+		from res_feature_value
+		WHERE
+		feature_value_id = #{featureValueId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getResFeatureValueCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo" resultMap="BaseResultMap">
+		<include refid="featureValueSelector" />
+		WHERE
+		feature_value_id = #{resFeatureValueCustom.featureValueId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getResFeatureValueCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		feature_value_id, feature_value_name, feature_value_value, feature_id, is_display_name, is_display, is_enable, is_activation, is_del
+		from
+		res_feature_value
+		WHERE
+		feature_value_id in
+		<foreach collection="featureValueIdList" separator="," item="featureValueId" open="(" close=")">
+			#{featureValueId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getResFeatureValueListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo" resultMap="BaseResultMap">
+		<include refid="featureValueSelector" />
+		WHERE
+		feature_value_id in
+		<foreach collection="featureValueIdList" separator="," item="featureValueId" open="(" close=")">
+			#{featureValueId}
+		</foreach>
+		<include refid="featureValueListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addResFeatureValueCustomByQueryVo" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo" useGeneratedKeys="true"
+		keyProperty="resFeatureValueCustom.featureValueId">
+		INSERT INTO res_feature_value
+		<if test="resFeatureValueCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="resFeatureValueCustom.featureValueId != null">
+					feature_value_id,
+				</if>
+				<if test="resFeatureValueCustom.featureValueName != null">
+					feature_value_name,
+				</if>
+				<if test="resFeatureValueCustom.featureValueValue != null">
+					feature_value_value,
+				</if>
+				<if test="resFeatureValueCustom.featureId != null">
+					feature_id,
+				</if>
+				<if test="resFeatureValueCustom.isDisplayName != null">
+					is_display_name,
+				</if>
+				<if test="resFeatureValueCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="resFeatureValueCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="resFeatureValueCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="resFeatureValueCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="resFeatureValueCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="resFeatureValueCustom.featureValueId != null">
+					#{resFeatureValueCustom.featureValueId},
+				</if>
+				<if test="resFeatureValueCustom.featureValueName != null">
+					#{resFeatureValueCustom.featureValueName},
+				</if>
+				<if test="resFeatureValueCustom.featureValueValue != null">
+					#{resFeatureValueCustom.featureValueValue},
+				</if>
+				<if test="resFeatureValueCustom.featureId != null">
+					#{resFeatureValueCustom.featureId},
+				</if>
+				<if test="resFeatureValueCustom.isDisplayName != null">
+					#{resFeatureValueCustom.isDisplayName},
+				</if>
+				<if test="resFeatureValueCustom.isDisplay != null">
+					#{resFeatureValueCustom.isDisplay},
+				</if>
+				<if test="resFeatureValueCustom.isEnable != null">
+					#{resFeatureValueCustom.isEnable},
+				</if>
+				<if test="resFeatureValueCustom.isActivation != null">
+					#{resFeatureValueCustom.isActivation},
+				</if>
+				<if test="resFeatureValueCustom.isDel != null">
+					#{resFeatureValueCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addResFeatureValueCustomByCustom" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueCustom" useGeneratedKeys="true"
+		keyProperty="featureValueId">
+		INSERT INTO res_feature_value
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="featureValueId != null">
+				feature_value_id,
+			</if>
+			<if test="featureValueName != null">
+				feature_value_name,
+			</if>
+			<if test="featureValueValue != null">
+				feature_value_value,
+			</if>
+			<if test="featureId != null">
+				feature_id,
+			</if>
+			<if test="isDisplayName != null">
+				is_display_name,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="featureValueId != null">
+				#{featureValueId},
+			</if>
+			<if test="featureValueName != null">
+				#{featureValueName},
+			</if>
+			<if test="featureValueValue != null">
+				#{featureValueValue},
+			</if>
+			<if test="featureId != null">
+				#{featureId},
+			</if>
+			<if test="isDisplayName != null">
+				#{isDisplayName},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteResFeatureValueCustomByKey" parameterType="Integer">
+		DELETE FROM res_feature_value
+		WHERE
+		feature_value_id = #{featureValueId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteResFeatureValueCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM res_feature_value
+		WHERE
+		feature_value_id in
+		<foreach collection="featureValueIdList" separator="," item="featureValueId" open="(" close=")">
+			#{featureValueId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateResFeatureValueCustomByKeySelective" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo">
+		UPDATE res_feature_value
+		<set>
+			<if test="resFeatureValueCustom != null">
+				<trim suffixOverrides=",">
+					<if test="resFeatureValueCustom.featureValueName != null">
+						feature_value_name = #{resFeatureValueCustom.featureValueName},
+					</if>
+					<if test="resFeatureValueCustom.featureValueValue != null">
+						feature_value_value = #{resFeatureValueCustom.featureValueValue},
+					</if>
+					<if test="resFeatureValueCustom.featureId != null">
+						feature_id = #{resFeatureValueCustom.featureId},
+					</if>
+					<if test="resFeatureValueCustom.isDisplayName != null">
+						is_display_name = #{resFeatureValueCustom.isDisplayName},
+					</if>
+					<if test="resFeatureValueCustom.isDisplay != null">
+						is_display = #{resFeatureValueCustom.isDisplay},
+					</if>
+					<if test="resFeatureValueCustom.isEnable != null">
+						is_enable = #{resFeatureValueCustom.isEnable},
+					</if>
+					<if test="resFeatureValueCustom.isActivation != null">
+						is_activation = #{resFeatureValueCustom.isActivation},
+					</if>
+					<if test="resFeatureValueCustom.isDel != null">
+						is_del = #{resFeatureValueCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		feature_value_id = #{resFeatureValueCustom.featureValueId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateResFeatureValueCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.resource.vo.ResFeatureValueQueryVo">
+		UPDATE res_feature_value
+		<set>
+			<if test="resFeatureValueCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateFeatureValueName == true">
+						feature_value_name = #{resFeatureValueCustom.featureValueName},
+					</if>
+					<if test="updateFeatureValueValue == true">
+						feature_value_value = #{resFeatureValueCustom.featureValueValue},
+					</if>
+					<if test="updateFeatureId == true">
+						feature_id = #{resFeatureValueCustom.featureId},
+					</if>
+					<if test="updateIsDisplayName == true">
+						is_display_name = #{resFeatureValueCustom.isDisplayName},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{resFeatureValueCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{resFeatureValueCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{resFeatureValueCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{resFeatureValueCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		feature_value_id = #{resFeatureValueCustom.featureValueId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteResFeatureValueCustomByKey" parameterType="Integer">
+		update res_feature_value
+		set is_del = 0
+		WHERE
+		feature_value_id = #{featureValueId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteResFeatureValueCustomByKeyList" parameterType="ArrayList">
+		update res_feature_value
+		set is_del = 0
+		WHERE
+		feature_value_id in
+		<foreach collection="featureValueIdList" separator="," item="featureValueId" open="(" close=")">
+			#{featureValueId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

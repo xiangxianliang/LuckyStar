@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.user.mapper.UserBackUserMapper" >
+  <resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.user.po.UserBackUser" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="degree" property="degree" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="register_ip" property="registerIp" jdbcType="VARCHAR" />
+    <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+    <result column="login_count" property="loginCount" jdbcType="INTEGER" />
+    <result column="is_admin" property="isAdmin" jdbcType="INTEGER" />
+    <result column="is_locked" property="isLocked" jdbcType="INTEGER" />
+    <result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+    <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+    <result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, username, password, email, phone, img_url, salt, real_name, gender, id_card, 
+    degree, school, register_time, last_login_time, register_ip, last_login_ip, login_count, 
+    is_admin, is_locked, is_display, is_enable, is_activation, is_del
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gll.ls.core.pojo.user.po.UserBackUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_back_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_back_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_back_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gll.ls.core.pojo.user.po.UserBackUserExample" >
+    delete from user_back_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gll.ls.core.pojo.user.po.UserBackUser" >
+    insert into user_back_user (user_id, username, password, 
+      email, phone, img_url, 
+      salt, real_name, gender, 
+      id_card, degree, school, 
+      register_time, last_login_time, register_ip, 
+      last_login_ip, login_count, is_admin, 
+      is_locked, is_display, is_enable, 
+      is_activation, is_del)
+    values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
+      #{registerTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{registerIp,jdbcType=VARCHAR}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{loginCount,jdbcType=INTEGER}, #{isAdmin,jdbcType=INTEGER}, 
+      #{isLocked,jdbcType=INTEGER}, #{isDisplay,jdbcType=INTEGER}, #{isEnable,jdbcType=INTEGER}, 
+      #{isActivation,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gll.ls.core.pojo.user.po.UserBackUser" >
+    insert into user_back_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="degree != null" >
+        degree,
+      </if>
+      <if test="school != null" >
+        school,
+      </if>
+      <if test="registerTime != null" >
+        register_time,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="registerIp != null" >
+        register_ip,
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip,
+      </if>
+      <if test="loginCount != null" >
+        login_count,
+      </if>
+      <if test="isAdmin != null" >
+        is_admin,
+      </if>
+      <if test="isLocked != null" >
+        is_locked,
+      </if>
+      <if test="isDisplay != null" >
+        is_display,
+      </if>
+      <if test="isEnable != null" >
+        is_enable,
+      </if>
+      <if test="isActivation != null" >
+        is_activation,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null" >
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerIp != null" >
+        #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp != null" >
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null" >
+        #{loginCount,jdbcType=INTEGER},
+      </if>
+      <if test="isAdmin != null" >
+        #{isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null" >
+        #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="isDisplay != null" >
+        #{isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="isEnable != null" >
+        #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isActivation != null" >
+        #{isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gll.ls.core.pojo.user.po.UserBackUserExample" resultType="java.lang.Integer" >
+    select count(*) from user_back_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_back_user
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgUrl != null" >
+        img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salt != null" >
+        salt = #{record.salt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realName != null" >
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.degree != null" >
+        degree = #{record.degree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.school != null" >
+        school = #{record.school,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registerTime != null" >
+        register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginTime != null" >
+        last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.registerIp != null" >
+        register_ip = #{record.registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastLoginIp != null" >
+        last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginCount != null" >
+        login_count = #{record.loginCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.isAdmin != null" >
+        is_admin = #{record.isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="record.isLocked != null" >
+        is_locked = #{record.isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDisplay != null" >
+        is_display = #{record.isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="record.isEnable != null" >
+        is_enable = #{record.isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="record.isActivation != null" >
+        is_activation = #{record.isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_back_user
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      salt = #{record.salt,jdbcType=VARCHAR},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      degree = #{record.degree,jdbcType=VARCHAR},
+      school = #{record.school,jdbcType=VARCHAR},
+      register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      register_ip = #{record.registerIp,jdbcType=VARCHAR},
+      last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      login_count = #{record.loginCount,jdbcType=INTEGER},
+      is_admin = #{record.isAdmin,jdbcType=INTEGER},
+      is_locked = #{record.isLocked,jdbcType=INTEGER},
+      is_display = #{record.isDisplay,jdbcType=INTEGER},
+      is_enable = #{record.isEnable,jdbcType=INTEGER},
+      is_activation = #{record.isActivation,jdbcType=INTEGER},
+      is_del = #{record.isDel,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gll.ls.core.pojo.user.po.UserBackUser" >
+    update user_back_user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null" >
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerIp != null" >
+        register_ip = #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp != null" >
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null" >
+        login_count = #{loginCount,jdbcType=INTEGER},
+      </if>
+      <if test="isAdmin != null" >
+        is_admin = #{isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="isLocked != null" >
+        is_locked = #{isLocked,jdbcType=INTEGER},
+      </if>
+      <if test="isDisplay != null" >
+        is_display = #{isDisplay,jdbcType=INTEGER},
+      </if>
+      <if test="isEnable != null" >
+        is_enable = #{isEnable,jdbcType=INTEGER},
+      </if>
+      <if test="isActivation != null" >
+        is_activation = #{isActivation,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gll.ls.core.pojo.user.po.UserBackUser" >
+    update user_back_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      register_ip = #{registerIp,jdbcType=VARCHAR},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      login_count = #{loginCount,jdbcType=INTEGER},
+      is_admin = #{isAdmin,jdbcType=INTEGER},
+      is_locked = #{isLocked,jdbcType=INTEGER},
+      is_display = #{isDisplay,jdbcType=INTEGER},
+      is_enable = #{isEnable,jdbcType=INTEGER},
+      is_activation = #{isActivation,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

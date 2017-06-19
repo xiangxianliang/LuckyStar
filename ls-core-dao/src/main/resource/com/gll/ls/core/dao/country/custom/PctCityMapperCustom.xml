@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.country.custom.PctCityMapperCustom">
+
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.country.vo.PctCityCustom">
+		<id column="city_code" property="cityCode" jdbcType="VARCHAR" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
+		<result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="citySelector">
+		SELECT
+		<if test="selectFields.size !=null and selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			city_code, city_name, province_code
+		</if>
+		from pct_city
+	</sql>
+
+	<!-- where SQL -->
+	<sql id="cityListWhere">
+		<where>
+			<if test="pctCityCustom != null">
+				<if test="pctCityCustom.cityCode != null">
+					and city_code = #{pctCityCustom.cityCode}
+				</if>
+				<if test="pctCityCustom.cityName != null">
+					<if test="cityNameLike == false">
+						and city_name = #{pctCityCustom.cityName}
+					</if>
+					<if test="cityNameLike == true">
+						and city_name like "%"#{pctCityCustom.cityName}"%"
+					</if>
+				</if>
+				<if test="pctCityCustom.provinceCode != null">
+					<if test="provinceCodeLike == false">
+						and province_code = #{pctCityCustom.provinceCode}
+					</if>
+					<if test="provinceCodeLike == true">
+						and province_code like "%"#{pctCityCustom.provinceCode}"%"
+					</if>
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<!-- orderby SQL -->
+	<sql id="cityListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- limit SQL -->
+	<sql id="cityListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getPctCityCustomListWithPage" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo" resultMap="BaseResultMap">
+		<include refid="citySelector" />
+		<include refid="cityListWhere" />
+		<include refid="cityListOrder" />
+		<include refid="cityListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getPctCityCustomCount" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo" resultType="Integer">
+		SELECT count(1) FROM pct_city
+		<include refid="cityListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getPctCityCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo" resultMap="BaseResultMap">
+		<include refid="citySelector" />
+		<include refid="cityListWhere" />
+		<include refid="cityListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getPctCityCustomByKey" parameterType="String" resultMap="BaseResultMap">
+		SELECT
+		city_code, city_name, province_code
+		from pct_city
+		WHERE
+		city_code = #{cityCode}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getPctCityCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo" resultMap="BaseResultMap">
+		<include refid="citySelector" />
+		WHERE
+		city_code = #{pctCityCustom.cityCode}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getPctCityCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		city_code, city_name, province_code
+		from pct_city
+		WHERE
+		city_code in
+		<foreach collection="cityCodeList" separator="," item="cityCode" open="(" close=")">
+			#{cityCode}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getPctCityListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo" resultMap="BaseResultMap">
+		<include refid="citySelector" />
+		WHERE
+		city_code in
+		<foreach collection="cityCodeList" separator="," item="cityCode" open="(" close=")">
+			#{cityCode}
+		</foreach>
+		<include refid="cityListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addPctCityCustomByQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo" useGeneratedKeys="true" keyProperty="pctCityCustom.cityCode">
+		INSERT INTO pct_city
+		<if test="pctCityCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="pctCityCustom.cityCode != null">
+					city_code,
+				</if>
+				<if test="pctCityCustom.cityName != null">
+					city_name,
+				</if>
+				<if test="pctCityCustom.provinceCode != null">
+					province_code,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="pctCityCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="pctCityCustom.cityCode != null">
+					#{pctCityCustom.cityCode},
+				</if>
+				<if test="pctCityCustom.cityName != null">
+					#{pctCityCustom.cityName},
+				</if>
+				<if test="pctCityCustom.provinceCode != null">
+					#{pctCityCustom.provinceCode},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addPctCityCustomByCustom" parameterType="com.gll.ls.core.pojo.country.vo.PctCityCustom" useGeneratedKeys="true" keyProperty="cityCode">
+		INSERT INTO pct_city
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="cityCode != null">
+				city_code,
+			</if>
+			<if test="cityName != null">
+				city_name,
+			</if>
+			<if test="provinceCode != null">
+				province_code,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cityCode != null">
+				#{cityCode},
+			</if>
+			<if test="cityName != null">
+				#{cityName},
+			</if>
+			<if test="provinceCode != null">
+				#{provinceCode},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deletePctCityCustomByKey" parameterType="String">
+		DELETE FROM pct_city
+		WHERE
+		city_code = #{cityCode}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deletePctCityCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM pct_city
+		WHERE
+		city_code in
+		<foreach collection="cityCodeList" separator="," item="cityCode" open="(" close=")">
+			#{cityCode}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updatePctCityCustomByKeySelective" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo">
+		UPDATE pct_city
+		<set>
+			<if test="pctCityCustom != null">
+				<trim suffixOverrides=",">
+					<if test="pctCityCustom.cityName != null">
+						city_name = #{pctCityCustom.cityName},
+					</if>
+					<if test="pctCityCustom.provinceCode != null">
+						province_code = #{pctCityCustom.provinceCode},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		city_code = #{pctCityCustom.cityCode}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updatePctCityCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.country.vo.PctCityQueryVo">
+		UPDATE pct_city
+		<set>
+			<if test="pctCityCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateCityName == true">
+						city_name = #{pctCityCustom.cityName},
+					</if>
+					<if test="updateProvinceCode == true">
+						province_code = #{pctCityCustom.provinceCode},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		city_code = #{pctCityCustom.cityCode}
+	</update>
+
+
+</mapper>
+

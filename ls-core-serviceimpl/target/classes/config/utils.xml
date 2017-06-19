@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd ">
+
+	<!-- session bean -->
+	<bean id="sessionProvider" class="com.gll.ls.core.utils.session.impl.HttpSessionProvider">
+	</bean>
+
+	<!-- mail -->
+	<bean id="mailService" class="com.gll.ls.core.utils.mail.impl.MailServiceImpl">
+	</bean>
+
+	<!-- cookie -->
+	<bean id="cookieService" class="com.gll.ls.core.utils.cookie.impl.CookieServiceImpl">
+	</bean>
+
+	<!-- sorl -->
+	<bean id="searchItemService" class="com.gll.ls.core.utils.search.impl.SearchItemServiceImpl">
+	</bean>
+
+	<!-- solr -->
+	<bean id="solrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+		<!-- 构造方法注入 -->
+		<constructor-arg index="0" value="http://192.168.180.11:9080/solr/collection1/"></constructor-arg>
+	</bean>
+
+	<!-- 连接redis单机版 -->
+	<bean id="jedisClientPool" class="com.gll.ls.core.utils.jedis.impl.JedisClientPool">
+		<!-- set 注入 -->
+		<!-- <property name="jedisPool" ref="jedisPool"></property> -->
+	</bean>
+
+	<!-- jedisPool -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<!-- 构造方法注入 -->
+		<constructor-arg name="host" value="192.168.180.11"></constructor-arg>
+		<constructor-arg name="port" value="6379"></constructor-arg>
+	</bean>
+
+	<!-- 连接redis集群 -->
+	<!-- <bean id="jedisClientCluster" class="com.gll.ls.core.utils.jedis.impl.JedisClientCluster"> -->
+	<!-- 注入 -->
+	<!-- <property name="jedisCluster" ref="jedisCluster"></property> -->
+	<!-- </bean> -->
+
+	<!-- JedisCluster -->
+	<!-- <bean id="jedisCluster" class="redis.clients.jedis.JedisCluster"> -->
+	<!-- 构造方法注入 -->
+	<!-- <constructor-arg name="nodes"> -->
+	<!-- <set> -->
+	<!-- <bean class="redis.clients.jedis.HostAndPort"> -->
+	<!-- <constructor-arg name="host" value="192.168.113.101"></constructor-arg> -->
+	<!-- <constructor-arg name="port" value="7001"></constructor-arg> -->
+	<!-- </bean> -->
+	<!-- <bean class="redis.clients.jedis.HostAndPort"> -->
+	<!-- <constructor-arg name="host" value="192.168.113.102"></constructor-arg> -->
+	<!-- <constructor-arg name="port" value="7001"></constructor-arg> -->
+	<!-- </bean> -->
+	<!-- <bean class="redis.clients.jedis.HostAndPort"> -->
+	<!-- <constructor-arg name="host" value="192.168.113.103"></constructor-arg> -->
+	<!-- <constructor-arg name="port" value="7001"></constructor-arg> -->
+	<!-- </bean> -->
+	<!-- <bean class="redis.clients.jedis.HostAndPort"> -->
+	<!-- <constructor-arg name="host" value="192.168.113.101"></constructor-arg> -->
+	<!-- <constructor-arg name="port" value="7000"></constructor-arg> -->
+	<!-- </bean> -->
+	<!-- <bean class="redis.clients.jedis.HostAndPort"> -->
+	<!-- <constructor-arg name="host" value="192.168.113.102"></constructor-arg> -->
+	<!-- <constructor-arg name="port" value="7000"></constructor-arg> -->
+	<!-- </bean> -->
+	<!-- <bean class="redis.clients.jedis.HostAndPort"> -->
+	<!-- <constructor-arg name="host" value="192.168.113.103"></constructor-arg> -->
+	<!-- <constructor-arg name="port" value="7000"></constructor-arg> -->
+	<!-- </bean> -->
+	<!-- </set> -->
+	<!-- </constructor-arg> -->
+	<!-- </bean> -->
+
+	<!-- freemarker -->
+	<!-- <bean id="staticPageService" class="com.gll.core.service.staticpage.StaticPageServiceImpl"> -->
+	<!-- set注入 -->
+	<!-- <property name="freeMarkerConfigurer"> -->
+	<!-- <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> -->
+	<!-- <property>标签中name就是属性名称，value是普通属性的是，ref音容其他的对象 -->
+	<!-- <property name="templateLoaderPath" value="/WEB-INF/ftl/"></property> -->
+	<!-- <property name="defaultEncoding" value="UTF-8"></property> -->
+	<!-- </bean> -->
+	<!-- </property> -->
+
+	<!-- 构造器注入 -->
+	<!-- <constructor-arg></constructor-arg> -->
+
+	<!-- </bean> -->
+
+</beans>

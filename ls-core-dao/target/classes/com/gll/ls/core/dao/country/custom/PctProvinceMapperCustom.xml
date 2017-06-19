@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.country.custom.PctProvinceMapperCustom">
+
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.country.vo.PctProvinceCustom">
+		<id column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+		<result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="provinceSelector">
+		SELECT
+		<if test="selectFields.size !=null and selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			province_code, province_name
+		</if>
+		from pct_province
+	</sql>
+
+	<!-- where SQL -->
+	<sql id="provinceListWhere">
+		<where>
+			<if test="pctProvinceCustom != null">
+				<if test="pctProvinceCustom.provinceCode != null">
+					and province_code = #{pctProvinceCustom.provinceCode}
+				</if>
+				<if test="pctProvinceCustom.provinceName != null">
+					<if test="provinceNameLike == false">
+						and province_name = #{pctProvinceCustom.provinceName}
+					</if>
+					<if test="provinceNameLike == true">
+						and province_name like "%"#{pctProvinceCustom.provinceName}"%"
+					</if>
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<!-- orderby SQL -->
+	<sql id="provinceListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+	<!-- limit SQL -->
+	<sql id="provinceListLimit">
+		<if test="pctTownQueryVo != null">
+			<if test="startRow != null">
+				limit #{startRow}, #{pageSize}
+			</if>
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getPctProvinceCustomListWithPage" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo" resultMap="BaseResultMap">
+		<include refid="provinceSelector" />
+		<include refid="provinceListWhere" />
+		<include refid="provinceListOrder" />
+		<include refid="provinceListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getPctProvinceCustomCount" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo" resultType="Integer">
+		SELECT count(1) FROM pct_province
+		<include refid="provinceListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getPctProvinceCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo" resultMap="BaseResultMap">
+		<include refid="provinceSelector" />
+		<include refid="provinceListWhere" />
+		<include refid="provinceListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getPctProvinceCustomByKey" parameterType="String" resultMap="BaseResultMap">
+		SELECT
+		province_code, province_name
+		from pct_province
+		WHERE
+		province_code =
+		#{provinceCode}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getPctProvinceCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo" resultMap="BaseResultMap">
+		<include refid="provinceSelector" />
+		WHERE
+		province_code = #{pctProvinceCustom.provinceCode}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getPctProvinceCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		province_code, province_name
+		from pct_province
+		WHERE
+		province_code in
+		<foreach collection="provinceCodeList" separator="," item="provinceCode" open="(" close=")">
+			#{provinceCode}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getPctProvinceListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo" resultMap="BaseResultMap">
+		<include refid="provinceSelector" />
+		WHERE
+		province_code in
+		<foreach collection="provinceCodeList" separator="," item="provinceCode" open="(" close=")">
+			#{provinceCode}
+		</foreach>
+		<include refid="provinceListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addPctProvinceCustomByQueryVo" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo" useGeneratedKeys="true"
+		keyProperty="pctProvinceCustom.provinceCode">
+		INSERT INTO pct_province
+		<if test="pctProvinceCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="pctProvinceCustom.provinceCode != null">
+					province_code,
+				</if>
+				<if test="pctProvinceCustom.provinceName != null">
+					province_name,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="pctProvinceCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="pctProvinceCustom.provinceCode != null">
+					#{pctProvinceCustom.provinceCode},
+				</if>
+				<if test="pctProvinceCustom.provinceName != null">
+					#{pctProvinceCustom.provinceName},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addPctProvinceCustomByCustom" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceCustom" useGeneratedKeys="true" keyProperty="provinceCode">
+		INSERT INTO pct_province
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="provinceCode != null">
+				province_code,
+			</if>
+			<if test="provinceName != null">
+				province_name,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="provinceCode != null">
+				#{provinceCode},
+			</if>
+			<if test="provinceName != null">
+				#{provinceName},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deletePctProvinceCustomByKey" parameterType="String">
+		DELETE FROM pct_province
+		WHERE
+		province_code = #{provinceCode}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deletePctProvinceCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM pct_province
+		WHERE
+		province_code in
+		<foreach collection="provinceCodeList" separator="," item="provinceCode" open="(" close=")">
+			#{provinceCode}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updatePctProvinceCustomByKeySelective" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo">
+		UPDATE pct_province
+		<set>
+			<if test="pctProvinceCustom != null">
+				<trim suffixOverrides=",">
+					<if test="pctProvinceCustom.provinceName != null">
+						province_name = #{pctProvinceCustom.provinceName},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		province_code = #{pctProvinceCustom.provinceCode}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updatePctProvinceCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.country.vo.PctProvinceQueryVo">
+		UPDATE pct_province
+		<set>
+			<if test="pctProvinceCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateProvinceName == true">
+						province_name = #{pctProvinceCustom.provinceName},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		province_code = #{pctProvinceCustom.provinceCode}
+	</update>
+
+
+</mapper>
+

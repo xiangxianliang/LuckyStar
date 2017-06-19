@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysRoleModuleMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysRoleModuleCustom">
+		<id column="role_module_id" property="roleModuleId" jdbcType="INTEGER" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="module_id" property="moduleId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="roleModuleSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			role_module_id, role_id, module_id
+		</if>
+		from sys_role_module
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="roleModuleListWhere">
+		<where>
+			<if test="sysRoleModuleCustom != null">
+				<if test="sysRoleModuleCustom.roleModuleId != null">
+					and role_module_id = #{sysRoleModuleCustom.roleModuleId}
+				</if>
+				<if test="sysRoleModuleCustom.roleId != null">
+					and role_id = #{sysRoleModuleCustom.roleId}
+				</if>
+				<if test="sysRoleModuleCustom.moduleId != null">
+					and module_id = #{sysRoleModuleCustom.moduleId}
+				</if>
+			</if>
+			<if test="roleModuleIdStart != null">
+				and role_module_id &gt;= #{roleModuleIdStart}
+			</if>
+			<if test="roleModuleIdEnd != null">
+				and role_module_id &lt; #{roleModuleIdEnd}
+			</if>
+			<if test="roleIdStart != null">
+				and role_id &gt;= #{roleIdStart}
+			</if>
+			<if test="roleIdEnd != null">
+				and role_id &lt; #{roleIdEnd}
+			</if>
+			<if test="moduleIdStart != null">
+				and module_id &gt;= #{moduleIdStart}
+			</if>
+			<if test="moduleIdEnd != null">
+				and module_id &lt; #{moduleIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="roleModuleListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="roleModuleListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysRoleModuleCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleModuleSelector" />
+		<include refid="roleModuleListWhere" />
+		<include refid="roleModuleListOrder" />
+		<include refid="roleModuleListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysRoleModuleCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_role_module
+		<include refid="roleModuleListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysRoleModuleCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleModuleSelector" />
+		<include refid="roleModuleListWhere" />
+		<include refid="roleModuleListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysRoleModuleCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		role_module_id, role_id, module_id
+		from sys_role_module
+		WHERE
+		role_module_id = #{roleModuleId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysRoleModuleCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleModuleSelector" />
+		WHERE
+		role_module_id = #{sysRoleModuleCustom.roleModuleId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysRoleModuleCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		role_module_id, role_id, module_id
+		from sys_role_module
+		WHERE
+		role_module_id in
+		<foreach collection="roleModuleIdList" separator="," item="roleModuleId" open="(" close=")">
+			#{roleModuleId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysRoleModuleListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo" resultMap="BaseResultMap">
+		<include refid="roleModuleSelector" />
+		WHERE
+		role_module_id in
+		<foreach collection="roleModuleIdList" separator="," item="roleModuleId" open="(" close=")">
+			#{roleModuleId}
+		</foreach>
+		<include refid="roleModuleListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysRoleModuleCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo" useGeneratedKeys="true"
+		keyProperty="sysRoleModuleCustom.roleModuleId">
+		INSERT INTO sys_role_module
+		<if test="sysRoleModuleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysRoleModuleCustom.roleModuleId != null">
+					role_module_id,
+				</if>
+				<if test="sysRoleModuleCustom.roleId != null">
+					role_id,
+				</if>
+				<if test="sysRoleModuleCustom.moduleId != null">
+					module_id,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysRoleModuleCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysRoleModuleCustom.roleModuleId != null">
+					#{sysRoleModuleCustom.roleModuleId},
+				</if>
+				<if test="sysRoleModuleCustom.roleId != null">
+					#{sysRoleModuleCustom.roleId},
+				</if>
+				<if test="sysRoleModuleCustom.moduleId != null">
+					#{sysRoleModuleCustom.moduleId},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysRoleModuleCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleCustom" useGeneratedKeys="true" keyProperty="roleModuleId">
+		INSERT INTO sys_role_module
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="roleModuleId != null">
+				role_module_id,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="moduleId != null">
+				module_id,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleModuleId != null">
+				#{roleModuleId},
+			</if>
+			<if test="roleId != null">
+				#{roleId},
+			</if>
+			<if test="moduleId != null">
+				#{moduleId},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysRoleModuleCustomByKey" parameterType="Integer">
+		DELETE FROM sys_role_module
+		WHERE
+		role_module_id = #{roleModuleId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysRoleModuleCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_role_module
+		WHERE
+		role_module_id in
+		<foreach collection="roleModuleIdList" separator="," item="roleModuleId" open="(" close=")">
+			#{roleModuleId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysRoleModuleCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo">
+		UPDATE sys_role_module
+		<set>
+			<if test="sysRoleModuleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysRoleModuleCustom.roleId != null">
+						role_id = #{sysRoleModuleCustom.roleId},
+					</if>
+					<if test="sysRoleModuleCustom.moduleId != null">
+						module_id = #{sysRoleModuleCustom.moduleId},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		role_module_id = #{sysRoleModuleCustom.roleModuleId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysRoleModuleCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysRoleModuleQueryVo">
+		UPDATE sys_role_module
+		<set>
+			<if test="sysRoleModuleCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateRoleId == true">
+						role_id = #{sysRoleModuleCustom.roleId},
+					</if>
+					<if test="updateModuleId == true">
+						module_id = #{sysRoleModuleCustom.moduleId},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		role_module_id = #{sysRoleModuleCustom.roleModuleId}
+	</update>
+
+
+</mapper>
+

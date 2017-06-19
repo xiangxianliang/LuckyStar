@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.system.custom.SysRolePermissionMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysRolePermissionCustom">
+		<id column="role_permission_id" property="rolePermissionId" jdbcType="INTEGER" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="permission_id" property="permissionId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="rolePermissionSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			role_permission_id, role_id, permission_id
+		</if>
+		from sys_role_permission
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="rolePermissionListWhere">
+		<where>
+			<if test="sysRolePermissionCustom != null">
+				<if test="sysRolePermissionCustom.rolePermissionId != null">
+					and role_permission_id = #{sysRolePermissionCustom.rolePermissionId}
+				</if>
+				<if test="sysRolePermissionCustom.roleId != null">
+					and role_id = #{sysRolePermissionCustom.roleId}
+				</if>
+				<if test="sysRolePermissionCustom.permissionId != null">
+					and permission_id = #{sysRolePermissionCustom.permissionId}
+				</if>
+			</if>
+			<if test="rolePermissionIdStart != null">
+				and role_permission_id &gt;= #{rolePermissionIdStart}
+			</if>
+			<if test="rolePermissionIdEnd != null">
+				and role_permission_id &lt; #{rolePermissionIdEnd}
+			</if>
+			<if test="roleIdStart != null">
+				and role_id &gt;= #{roleIdStart}
+			</if>
+			<if test="roleIdEnd != null">
+				and role_id &lt; #{roleIdEnd}
+			</if>
+			<if test="permissionIdStart != null">
+				and permission_id &gt;= #{permissionIdStart}
+			</if>
+			<if test="permissionIdEnd != null">
+				and permission_id &lt; #{permissionIdEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="rolePermissionListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="rolePermissionListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getSysRolePermissionCustomListWithPage" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="rolePermissionSelector" />
+		<include refid="rolePermissionListWhere" />
+		<include refid="rolePermissionListOrder" />
+		<include refid="rolePermissionListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getSysRolePermissionCustomCount" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo" resultType="Integer">
+		SELECT count(1) FROM sys_role_permission
+		<include refid="rolePermissionListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getSysRolePermissionCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="rolePermissionSelector" />
+		<include refid="rolePermissionListWhere" />
+		<include refid="rolePermissionListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getSysRolePermissionCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		role_permission_id, role_id, permission_id
+		from sys_role_permission
+		WHERE
+		role_permission_id = #{rolePermissionId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getSysRolePermissionCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="rolePermissionSelector" />
+		WHERE
+		role_permission_id = #{sysRolePermissionCustom.rolePermissionId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getSysRolePermissionCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		role_permission_id, role_id, permission_id
+		from sys_role_permission
+		WHERE
+		role_permission_id in
+		<foreach collection="rolePermissionIdList" separator="," item="rolePermissionId" open="(" close=")">
+			#{rolePermissionId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getSysRolePermissionListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo" resultMap="BaseResultMap">
+		<include refid="rolePermissionSelector" />
+		WHERE
+		role_permission_id in
+		<foreach collection="rolePermissionIdList" separator="," item="rolePermissionId" open="(" close=")">
+			#{rolePermissionId}
+		</foreach>
+		<include refid="rolePermissionListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysRolePermissionCustomByQueryVo" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo" useGeneratedKeys="true"
+		keyProperty="sysRolePermissionCustom.rolePermissionId">
+		INSERT INTO sys_role_permission
+		<if test="sysRolePermissionCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="sysRolePermissionCustom.rolePermissionId != null">
+					role_permission_id,
+				</if>
+				<if test="sysRolePermissionCustom.roleId != null">
+					role_id,
+				</if>
+				<if test="sysRolePermissionCustom.permissionId != null">
+					permission_id,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="sysRolePermissionCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="sysRolePermissionCustom.rolePermissionId != null">
+					#{sysRolePermissionCustom.rolePermissionId},
+				</if>
+				<if test="sysRolePermissionCustom.roleId != null">
+					#{sysRolePermissionCustom.roleId},
+				</if>
+				<if test="sysRolePermissionCustom.permissionId != null">
+					#{sysRolePermissionCustom.permissionId},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addSysRolePermissionCustomByCustom" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionCustom" useGeneratedKeys="true"
+		keyProperty="rolePermissionId">
+		INSERT INTO sys_role_permission
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="rolePermissionId != null">
+				role_permission_id,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="permissionId != null">
+				permission_id,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rolePermissionId != null">
+				#{rolePermissionId},
+			</if>
+			<if test="roleId != null">
+				#{roleId},
+			</if>
+			<if test="permissionId != null">
+				#{permissionId},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteSysRolePermissionCustomByKey" parameterType="Integer">
+		DELETE FROM sys_role_permission
+		WHERE
+		role_permission_id = #{rolePermissionId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteSysRolePermissionCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM sys_role_permission
+		WHERE
+		role_permission_id in
+		<foreach collection="rolePermissionIdList" separator="," item="rolePermissionId" open="(" close=")">
+			#{rolePermissionId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateSysRolePermissionCustomByKeySelective" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo">
+		UPDATE sys_role_permission
+		<set>
+			<if test="sysRolePermissionCustom != null">
+				<trim suffixOverrides=",">
+					<if test="sysRolePermissionCustom.roleId != null">
+						role_id = #{sysRolePermissionCustom.roleId},
+					</if>
+					<if test="sysRolePermissionCustom.permissionId != null">
+						permission_id = #{sysRolePermissionCustom.permissionId},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		role_permission_id = #{sysRolePermissionCustom.rolePermissionId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateSysRolePermissionCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.system.vo.SysRolePermissionQueryVo">
+		UPDATE sys_role_permission
+		<set>
+			<if test="sysRolePermissionCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateRoleId == true">
+						role_id = #{sysRolePermissionCustom.roleId},
+					</if>
+					<if test="updatePermissionId == true">
+						permission_id = #{sysRolePermissionCustom.permissionId},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		role_permission_id = #{sysRolePermissionCustom.rolePermissionId}
+	</update>
+
+
+</mapper>
+

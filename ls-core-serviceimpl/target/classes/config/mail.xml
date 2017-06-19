@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd ">
+
+	<!--mailSender ================================= -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<!-- 配置右键服务器供应商 -->
+		<!-- SMTP协议介绍 -->
+		<property name="host" value="smtp.163.com"></property>
+		<property name="username" value="haohuairen88@163.com"></property>
+		<property name="password" value="office10086gogo,"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop> <!-- 必须进行授权认证，它的目的就是阻止他人任意乱发邮件 -->
+				<prop key="mail.smtp.starttls.enable">true</prop><!-- SMTP加密方式:连接到一个TLS保护连接 -->
+				<prop key="mail.smtp.timeout">10000</prop><!-- 设置邮件发送超时时间 -->
+
+			</props>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gll.ls.core.dao.user.custom.UserBackUserMapperCustom">
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.user.vo.UserBackUserCustom">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="VARCHAR" />
+		<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+		<result column="degree" property="degree" jdbcType="VARCHAR" />
+		<result column="school" property="school" jdbcType="VARCHAR" />
+		<result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+		<result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+		<result column="register_ip" property="registerIp" jdbcType="VARCHAR" />
+		<result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+		<result column="login_count" property="loginCount" jdbcType="INTEGER" />
+		<result column="is_admin" property="isAdmin" jdbcType="INTEGER" />
+		<result column="is_locked" property="isLocked" jdbcType="INTEGER" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- select SQL -->
+	<sql id="backUserSelector">
+		SELECT
+		<if test="selectFields.size > 0">
+			<foreach collection="selectFields" separator="," item="field">
+				${field}
+			</foreach>
+		</if>
+		<if test="selectFields.size == 0">
+			user_id, username, password, email, phone, img_url, salt, real_name, gender, id_card, degree, school, register_time, last_login_time, register_ip,
+			last_login_ip, login_count, is_admin, is_locked, is_display, is_enable, is_activation, is_del
+		</if>
+		from user_back_user
+	</sql>
+
+
+	<!-- where SQL -->
+	<sql id="backUserListWhere">
+		<where>
+			<if test="userBackUserCustom != null">
+				<if test="userBackUserCustom.userId != null">
+					and user_id = #{userBackUserCustom.userId}
+				</if>
+				<if test="userBackUserCustom.username != null">
+					<if test="usernameLike == false">
+						and username = #{userBackUserCustom.username}
+					</if>
+					<if test="usernameLike == true">
+						and username like "%"#{userBackUserCustom.username}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.password != null">
+					<if test="passwordLike == false">
+						and password = #{userBackUserCustom.password}
+					</if>
+					<if test="passwordLike == true">
+						and password like "%"#{userBackUserCustom.password}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.email != null">
+					<if test="emailLike == false">
+						and email = #{userBackUserCustom.email}
+					</if>
+					<if test="emailLike == true">
+						and email like "%"#{userBackUserCustom.email}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.phone != null">
+					<if test="phoneLike == false">
+						and phone = #{userBackUserCustom.phone}
+					</if>
+					<if test="phoneLike == true">
+						and phone like "%"#{userBackUserCustom.phone}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.imgUrl != null">
+					<if test="imgUrlLike == false">
+						and img_url = #{userBackUserCustom.imgUrl}
+					</if>
+					<if test="imgUrlLike == true">
+						and img_url like "%"#{userBackUserCustom.imgUrl}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.salt != null">
+					<if test="saltLike == false">
+						and salt = #{userBackUserCustom.salt}
+					</if>
+					<if test="saltLike == true">
+						and salt like "%"#{userBackUserCustom.salt}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.realName != null">
+					<if test="realNameLike == false">
+						and real_name = #{userBackUserCustom.realName}
+					</if>
+					<if test="realNameLike == true">
+						and real_name like "%"#{userBackUserCustom.realName}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.gender != null">
+					<if test="genderLike == false">
+						and gender = #{userBackUserCustom.gender}
+					</if>
+					<if test="genderLike == true">
+						and gender like "%"#{userBackUserCustom.gender}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.idCard != null">
+					<if test="idCardLike == false">
+						and id_card = #{userBackUserCustom.idCard}
+					</if>
+					<if test="idCardLike == true">
+						and id_card like "%"#{userBackUserCustom.idCard}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.degree != null">
+					<if test="degreeLike == false">
+						and degree = #{userBackUserCustom.degree}
+					</if>
+					<if test="degreeLike == true">
+						and degree like "%"#{userBackUserCustom.degree}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.school != null">
+					<if test="schoolLike == false">
+						and school = #{userBackUserCustom.school}
+					</if>
+					<if test="schoolLike == true">
+						and school like "%"#{userBackUserCustom.school}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.registerTime != null">
+					and register_time = #{userBackUserCustom.registerTime}
+				</if>
+				<if test="userBackUserCustom.lastLoginTime != null">
+					and last_login_time = #{userBackUserCustom.lastLoginTime}
+				</if>
+				<if test="userBackUserCustom.registerIp != null">
+					<if test="registerIpLike == false">
+						and register_ip = #{userBackUserCustom.registerIp}
+					</if>
+					<if test="registerIpLike == true">
+						and register_ip like "%"#{userBackUserCustom.registerIp}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.lastLoginIp != null">
+					<if test="lastLoginIpLike == false">
+						and last_login_ip = #{userBackUserCustom.lastLoginIp}
+					</if>
+					<if test="lastLoginIpLike == true">
+						and last_login_ip like "%"#{userBackUserCustom.lastLoginIp}"%"
+					</if>
+				</if>
+				<if test="userBackUserCustom.loginCount != null">
+					and login_count = #{userBackUserCustom.loginCount}
+				</if>
+				<if test="userBackUserCustom.isAdmin != null">
+					and is_admin = #{userBackUserCustom.isAdmin}
+				</if>
+				<if test="userBackUserCustom.isLocked != null">
+					and is_locked = #{userBackUserCustom.isLocked}
+				</if>
+				<if test="userBackUserCustom.isDisplay != null">
+					and is_display = #{userBackUserCustom.isDisplay}
+				</if>
+				<if test="userBackUserCustom.isEnable != null">
+					and is_enable = #{userBackUserCustom.isEnable}
+				</if>
+				<if test="userBackUserCustom.isActivation != null">
+					and is_activation = #{userBackUserCustom.isActivation}
+				</if>
+				<if test="userBackUserCustom.isDel != null">
+					and is_del = #{userBackUserCustom.isDel}
+				</if>
+			</if>
+			<if test="userIdStart != null">
+				and user_id &gt;= #{userIdStart}
+			</if>
+			<if test="userIdEnd != null">
+				and user_id &lt; #{userIdEnd}
+			</if>
+			<if test="registerTimeStart != null">
+				and register_time &gt;= #{registerTimeStart}
+			</if>
+			<if test="registerTimeEnd != null">
+				and register_time &lt; #{registerTimeEnd}
+			</if>
+			<if test="lastLoginTimeStart != null">
+				and last_login_time &gt;= #{lastLoginTimeStart}
+			</if>
+			<if test="lastLoginTimeEnd != null">
+				and last_login_time &lt; #{lastLoginTimeEnd}
+			</if>
+			<if test="loginCountStart != null">
+				and login_count &gt;= #{loginCountStart}
+			</if>
+			<if test="loginCountEnd != null">
+				and login_count &lt; #{loginCountEnd}
+			</if>
+			<if test="isLockedStart != null">
+				and is_locked &gt;= #{isLockedStart}
+			</if>
+			<if test="isLockedEnd != null">
+				and is_locked &lt; #{isLockedEnd}
+			</if>
+		</where>
+	</sql>
+
+
+	<!-- orderby SQL -->
+	<sql id="backUserListOrder">
+		<if test="orderFields != null and orderFields.size > 0">
+			order by
+			<foreach collection="orderFields" separator="," item="orderField">
+				${orderField.fieldName} ${orderField.order}
+			</foreach>
+		</if>
+	</sql>
+
+
+
+	<!-- limit SQL -->
+	<sql id="backUserListLimit">
+		<if test="startRow != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</sql>
+
+
+
+	<!-- 分页查询 -->
+	<select id="getUserBackUserCustomListWithPage" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo" resultMap="BaseResultMap">
+		<include refid="backUserSelector" />
+		<include refid="backUserListWhere" />
+		<include refid="backUserListOrder" />
+		<include refid="backUserListLimit" />
+	</select>
+
+
+
+	<!-- 数据总数 -->
+	<select id="getUserBackUserCustomCount" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo" resultType="Integer">
+		SELECT count(1) FROM user_back_user
+		<include refid="backUserListWhere" />
+	</select>
+
+
+
+	<!-- 查询数据集合 -->
+	<select id="getUserBackUserCustomListByQueryVo" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo" resultMap="BaseResultMap">
+		<include refid="backUserSelector" />
+		<include refid="backUserListWhere" />
+		<include refid="backUserListOrder" />
+	</select>
+
+
+
+	<!-- 根据 主键 查找 -->
+	<select id="getUserBackUserCustomByKey" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+		user_id, username, password, email, phone, img_url, salt, real_name,
+		gender, id_card, degree, school, register_time, last_login_time, register_ip, last_login_ip, login_count, is_admin, is_locked, is_display, is_enable,
+		is_activation, is_del
+		from user_back_user
+		WHERE
+		user_id = #{userId}
+	</select>
+
+
+
+	<!-- 根据主键查找 带结果查询字段 -->
+	<select id="getUserBackUserCustomByKeyWithQueryVo" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo" resultMap="BaseResultMap">
+		<include refid="backUserSelector" />
+		WHERE
+		user_id = #{userBackUserCustom.userId}
+	</select>
+
+
+
+	<!-- 根据 主键集合 批量查找 List集合 -->
+	<select id="getUserBackUserCustomListByKeyList" parameterType="ArrayList" resultMap="BaseResultMap">
+		SELECT
+		user_id, username, password, email, phone, img_url, salt, real_name, gender, id_card, degree, school, register_time, last_login_time, register_ip,
+		last_login_ip, login_count, is_admin, is_locked, is_display, is_enable, is_activation, is_del
+		from user_back_user
+		WHERE
+		user_id in
+		<foreach collection="userIdList" separator="," item="userId" open="(" close=")">
+			#{userId}
+		</foreach>
+	</select>
+
+
+
+	<!-- 根据 主键 批量查找 -->
+	<select id="getUserBackUserListByKeyListWithQueryVo" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo" resultMap="BaseResultMap">
+		<include refid="backUserSelector" />
+		WHERE
+		user_id in
+		<foreach collection="userIdList" separator="," item="userId" open="(" close=")">
+			#{userId}
+		</foreach>
+		<include refid="backUserListOrder" />
+	</select>
+
+
+
+	<!-- 添加 -->
+	<insert id="addUserBackUserCustomByQueryVo" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo" useGeneratedKeys="true"
+		keyProperty="userBackUserCustom.userId">
+		INSERT INTO user_back_user
+		<if test="userBackUserCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+				<if test="userBackUserCustom.userId != null">
+					user_id,
+				</if>
+				<if test="userBackUserCustom.username != null">
+					username,
+				</if>
+				<if test="userBackUserCustom.password != null">
+					password,
+				</if>
+				<if test="userBackUserCustom.email != null">
+					email,
+				</if>
+				<if test="userBackUserCustom.phone != null">
+					phone,
+				</if>
+				<if test="userBackUserCustom.imgUrl != null">
+					img_url,
+				</if>
+				<if test="userBackUserCustom.salt != null">
+					salt,
+				</if>
+				<if test="userBackUserCustom.realName != null">
+					real_name,
+				</if>
+				<if test="userBackUserCustom.gender != null">
+					gender,
+				</if>
+				<if test="userBackUserCustom.idCard != null">
+					id_card,
+				</if>
+				<if test="userBackUserCustom.degree != null">
+					degree,
+				</if>
+				<if test="userBackUserCustom.school != null">
+					school,
+				</if>
+				<if test="userBackUserCustom.registerTime != null">
+					register_time,
+				</if>
+				<if test="userBackUserCustom.lastLoginTime != null">
+					last_login_time,
+				</if>
+				<if test="userBackUserCustom.registerIp != null">
+					register_ip,
+				</if>
+				<if test="userBackUserCustom.lastLoginIp != null">
+					last_login_ip,
+				</if>
+				<if test="userBackUserCustom.loginCount != null">
+					login_count,
+				</if>
+				<if test="userBackUserCustom.isAdmin != null">
+					is_admin,
+				</if>
+				<if test="userBackUserCustom.isLocked != null">
+					is_locked,
+				</if>
+				<if test="userBackUserCustom.isDisplay != null">
+					is_display,
+				</if>
+				<if test="userBackUserCustom.isEnable != null">
+					is_enable,
+				</if>
+				<if test="userBackUserCustom.isActivation != null">
+					is_activation,
+				</if>
+				<if test="userBackUserCustom.isDel != null">
+					is_del,
+				</if>
+			</trim>
+		</if>
+		VALUES
+		<if test="userBackUserCustom != null">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="userBackUserCustom.userId != null">
+					#{userBackUserCustom.userId},
+				</if>
+				<if test="userBackUserCustom.username != null">
+					#{userBackUserCustom.username},
+				</if>
+				<if test="userBackUserCustom.password != null">
+					#{userBackUserCustom.password},
+				</if>
+				<if test="userBackUserCustom.email != null">
+					#{userBackUserCustom.email},
+				</if>
+				<if test="userBackUserCustom.phone != null">
+					#{userBackUserCustom.phone},
+				</if>
+				<if test="userBackUserCustom.imgUrl != null">
+					#{userBackUserCustom.imgUrl},
+				</if>
+				<if test="userBackUserCustom.salt != null">
+					#{userBackUserCustom.salt},
+				</if>
+				<if test="userBackUserCustom.realName != null">
+					#{userBackUserCustom.realName},
+				</if>
+				<if test="userBackUserCustom.gender != null">
+					#{userBackUserCustom.gender},
+				</if>
+				<if test="userBackUserCustom.idCard != null">
+					#{userBackUserCustom.idCard},
+				</if>
+				<if test="userBackUserCustom.degree != null">
+					#{userBackUserCustom.degree},
+				</if>
+				<if test="userBackUserCustom.school != null">
+					#{userBackUserCustom.school},
+				</if>
+				<if test="userBackUserCustom.registerTime != null">
+					#{userBackUserCustom.registerTime},
+				</if>
+				<if test="userBackUserCustom.lastLoginTime != null">
+					#{userBackUserCustom.lastLoginTime},
+				</if>
+				<if test="userBackUserCustom.registerIp != null">
+					#{userBackUserCustom.registerIp},
+				</if>
+				<if test="userBackUserCustom.lastLoginIp != null">
+					#{userBackUserCustom.lastLoginIp},
+				</if>
+				<if test="userBackUserCustom.loginCount != null">
+					#{userBackUserCustom.loginCount},
+				</if>
+				<if test="userBackUserCustom.isAdmin != null">
+					#{userBackUserCustom.isAdmin},
+				</if>
+				<if test="userBackUserCustom.isLocked != null">
+					#{userBackUserCustom.isLocked},
+				</if>
+				<if test="userBackUserCustom.isDisplay != null">
+					#{userBackUserCustom.isDisplay},
+				</if>
+				<if test="userBackUserCustom.isEnable != null">
+					#{userBackUserCustom.isEnable},
+				</if>
+				<if test="userBackUserCustom.isActivation != null">
+					#{userBackUserCustom.isActivation},
+				</if>
+				<if test="userBackUserCustom.isDel != null">
+					#{userBackUserCustom.isDel},
+				</if>
+			</trim>
+		</if>
+	</insert>
+
+
+
+	<!-- 添加 -->
+	<insert id="addUserBackUserCustomByCustom" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserCustom" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO user_back_user
+		<trim prefix="(" suffix=")" suffixOverrides=","><!-- suffixOverrides="," 去除多余的 ,号 -->
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="imgUrl != null">
+				img_url,
+			</if>
+			<if test="salt != null">
+				salt,
+			</if>
+			<if test="realName != null">
+				real_name,
+			</if>
+			<if test="gender != null">
+				gender,
+			</if>
+			<if test="idCard != null">
+				id_card,
+			</if>
+			<if test="degree != null">
+				degree,
+			</if>
+			<if test="school != null">
+				school,
+			</if>
+			<if test="registerTime != null">
+				register_time,
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time,
+			</if>
+			<if test="registerIp != null">
+				register_ip,
+			</if>
+			<if test="lastLoginIp != null">
+				last_login_ip,
+			</if>
+			<if test="loginCount != null">
+				login_count,
+			</if>
+			<if test="isAdmin != null">
+				is_admin,
+			</if>
+			<if test="isLocked != null">
+				is_locked,
+			</if>
+			<if test="isDisplay != null">
+				is_display,
+			</if>
+			<if test="isEnable != null">
+				is_enable,
+			</if>
+			<if test="isActivation != null">
+				is_activation,
+			</if>
+			<if test="isDel != null">
+				is_del,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="username != null">
+				#{username},
+			</if>
+			<if test="password != null">
+				#{password},
+			</if>
+			<if test="email != null">
+				#{email},
+			</if>
+			<if test="phone != null">
+				#{phone},
+			</if>
+			<if test="imgUrl != null">
+				#{imgUrl},
+			</if>
+			<if test="salt != null">
+				#{salt},
+			</if>
+			<if test="realName != null">
+				#{realName},
+			</if>
+			<if test="gender != null">
+				#{gender},
+			</if>
+			<if test="idCard != null">
+				#{idCard},
+			</if>
+			<if test="degree != null">
+				#{degree},
+			</if>
+			<if test="school != null">
+				#{school},
+			</if>
+			<if test="registerTime != null">
+				#{registerTime},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime},
+			</if>
+			<if test="registerIp != null">
+				#{registerIp},
+			</if>
+			<if test="lastLoginIp != null">
+				#{lastLoginIp},
+			</if>
+			<if test="loginCount != null">
+				#{loginCount},
+			</if>
+			<if test="isAdmin != null">
+				#{isAdmin},
+			</if>
+			<if test="isLocked != null">
+				#{isLocked},
+			</if>
+			<if test="isDisplay != null">
+				#{isDisplay},
+			</if>
+			<if test="isEnable != null">
+				#{isEnable},
+			</if>
+			<if test="isActivation != null">
+				#{isActivation},
+			</if>
+			<if test="isDel != null">
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<!-- 根据 主键 删除 -->
+	<delete id="deleteUserBackUserCustomByKey" parameterType="Integer">
+		DELETE FROM user_back_user
+		WHERE
+		user_id = #{userId}
+	</delete>
+
+
+
+
+	<!-- 根据 主键 批量删除 -->
+	<delete id="deleteUserBackUserCustomByKeyList" parameterType="ArrayList">
+		DELETE FROM user_back_user
+		WHERE
+		user_id in
+		<foreach collection="userIdList" separator="," item="userId" open="(" close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+
+
+	<!-- 根据 主键 更新 -->
+	<update id="updateUserBackUserCustomByKeySelective" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo">
+		UPDATE user_back_user
+		<set>
+			<if test="userBackUserCustom != null">
+				<trim suffixOverrides=",">
+					<if test="userBackUserCustom.username != null">
+						username = #{userBackUserCustom.username},
+					</if>
+					<if test="userBackUserCustom.password != null">
+						password = #{userBackUserCustom.password},
+					</if>
+					<if test="userBackUserCustom.email != null">
+						email = #{userBackUserCustom.email},
+					</if>
+					<if test="userBackUserCustom.phone != null">
+						phone = #{userBackUserCustom.phone},
+					</if>
+					<if test="userBackUserCustom.imgUrl != null">
+						img_url = #{userBackUserCustom.imgUrl},
+					</if>
+					<if test="userBackUserCustom.salt != null">
+						salt = #{userBackUserCustom.salt},
+					</if>
+					<if test="userBackUserCustom.realName != null">
+						real_name = #{userBackUserCustom.realName},
+					</if>
+					<if test="userBackUserCustom.gender != null">
+						gender = #{userBackUserCustom.gender},
+					</if>
+					<if test="userBackUserCustom.idCard != null">
+						id_card = #{userBackUserCustom.idCard},
+					</if>
+					<if test="userBackUserCustom.degree != null">
+						degree = #{userBackUserCustom.degree},
+					</if>
+					<if test="userBackUserCustom.school != null">
+						school = #{userBackUserCustom.school},
+					</if>
+					<if test="userBackUserCustom.registerTime != null">
+						register_time = #{userBackUserCustom.registerTime},
+					</if>
+					<if test="userBackUserCustom.lastLoginTime != null">
+						last_login_time = #{userBackUserCustom.lastLoginTime},
+					</if>
+					<if test="userBackUserCustom.registerIp != null">
+						register_ip = #{userBackUserCustom.registerIp},
+					</if>
+					<if test="userBackUserCustom.lastLoginIp != null">
+						last_login_ip = #{userBackUserCustom.lastLoginIp},
+					</if>
+					<if test="userBackUserCustom.loginCount != null">
+						login_count = #{userBackUserCustom.loginCount},
+					</if>
+					<if test="userBackUserCustom.isAdmin != null">
+						is_admin = #{userBackUserCustom.isAdmin},
+					</if>
+					<if test="userBackUserCustom.isLocked != null">
+						is_locked = #{userBackUserCustom.isLocked},
+					</if>
+					<if test="userBackUserCustom.isDisplay != null">
+						is_display = #{userBackUserCustom.isDisplay},
+					</if>
+					<if test="userBackUserCustom.isEnable != null">
+						is_enable = #{userBackUserCustom.isEnable},
+					</if>
+					<if test="userBackUserCustom.isActivation != null">
+						is_activation = #{userBackUserCustom.isActivation},
+					</if>
+					<if test="userBackUserCustom.isDel != null">
+						is_del = #{userBackUserCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		user_id = #{userBackUserCustom.userId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新 带快照 -->
+	<update id="updateUserBackUserCustomByKeySnapshots" parameterType="com.gll.ls.core.pojo.user.vo.UserBackUserQueryVo">
+		UPDATE user_back_user
+		<set>
+			<if test="userBackUserCustom != null">
+				<trim suffixOverrides=",">
+					<if test="updateUsername == true">
+						username = #{userBackUserCustom.username},
+					</if>
+					<if test="updatePassword == true">
+						password = #{userBackUserCustom.password},
+					</if>
+					<if test="updateEmail == true">
+						email = #{userBackUserCustom.email},
+					</if>
+					<if test="updatePhone == true">
+						phone = #{userBackUserCustom.phone},
+					</if>
+					<if test="updateImgUrl == true">
+						img_url = #{userBackUserCustom.imgUrl},
+					</if>
+					<if test="updateSalt == true">
+						salt = #{userBackUserCustom.salt},
+					</if>
+					<if test="updateRealName == true">
+						real_name = #{userBackUserCustom.realName},
+					</if>
+					<if test="updateGender == true">
+						gender = #{userBackUserCustom.gender},
+					</if>
+					<if test="updateIdCard == true">
+						id_card = #{userBackUserCustom.idCard},
+					</if>
+					<if test="updateDegree == true">
+						degree = #{userBackUserCustom.degree},
+					</if>
+					<if test="updateSchool == true">
+						school = #{userBackUserCustom.school},
+					</if>
+					<if test="updateRegisterTime == true">
+						register_time = #{userBackUserCustom.registerTime},
+					</if>
+					<if test="updateLastLoginTime == true">
+						last_login_time = #{userBackUserCustom.lastLoginTime},
+					</if>
+					<if test="updateRegisterIp == true">
+						register_ip = #{userBackUserCustom.registerIp},
+					</if>
+					<if test="updateLastLoginIp == true">
+						last_login_ip = #{userBackUserCustom.lastLoginIp},
+					</if>
+					<if test="updateLoginCount == true">
+						login_count = #{userBackUserCustom.loginCount},
+					</if>
+					<if test="updateIsAdmin == true">
+						is_admin = #{userBackUserCustom.isAdmin},
+					</if>
+					<if test="updateIsLocked == true">
+						is_locked = #{userBackUserCustom.isLocked},
+					</if>
+					<if test="updateIsDisplay == true">
+						is_display = #{userBackUserCustom.isDisplay},
+					</if>
+					<if test="updateIsEnable == true">
+						is_enable = #{userBackUserCustom.isEnable},
+					</if>
+					<if test="updateIsActivation == true">
+						is_activation = #{userBackUserCustom.isActivation},
+					</if>
+					<if test="updateIsDel == true">
+						is_del = #{userBackUserCustom.isDel},
+					</if>
+				</trim>
+			</if>
+		</set>
+		WHERE
+		user_id = #{userBackUserCustom.userId}
+	</update>
+
+
+
+	<!-- 根据 主键 更新删除 -->
+	<update id="updateDeleteUserBackUserCustomByKey" parameterType="Integer">
+		update user_back_user
+		set is_del = 0
+		WHERE
+		user_id = #{userId}
+	</update>
+
+
+
+
+	<!-- 根据 主键 批量 更新删除 -->
+	<update id="updateDeleteUserBackUserCustomByKeyList" parameterType="ArrayList">
+		update user_back_user
+		set is_del = 0
+		WHERE
+		user_id in
+		<foreach collection="userIdList" separator="," item="userId" open="(" close=")">
+			#{userId}
+		</foreach>
+	</update>
+
+
+</mapper>
+

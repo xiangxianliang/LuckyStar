@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gll.ls.core.dao.system.extended.SysPermissionMapperExtended">
+
+	<resultMap id="BaseResultMap" type="com.gll.ls.core.pojo.system.vo.SysPermissionCustom">
+		<id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+		<result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
+		<result column="permission_code" property="permissionCode" jdbcType="VARCHAR" />
+		<result column="permission_method" property="permissionMethod" jdbcType="VARCHAR" />
+		<result column="permission_description" property="permissionDescription" jdbcType="VARCHAR" />
+		<result column="permission_icon" property="permissionIcon" jdbcType="VARCHAR" />
+		<result column="parent_module_id" property="parentModuleId" jdbcType="INTEGER" />
+		<result column="showorder" property="showorder" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="is_display" property="isDisplay" jdbcType="INTEGER" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+		<result column="is_activation" property="isActivation" jdbcType="INTEGER" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<!-- 权限map -->
+	<resultMap id="permissionRM" type="com.gll.ls.core.pojo.utils.user.vo.Permission">
+		<id column="permission_id" property="permissionId" />
+		<result column="permission_name" property="permissionName" />
+		<result column="permission_code" property="permissionCode" />
+		<result column="permission_method" property="permissionMethod" />
+		<result column="permission_icon" property="permissionIcon" />
+		<result column="parent_module_id" property="parentModuleId" />
+	</resultMap>
+
+	<!-- 根据用户的id 查询用户的 操作 权限 -->
+	<select id="getPermissonByUserId" parameterType="Integer" resultMap="permissionRM">
+		select
+		sp.permission_id,
+		sp.permission_name,
+		sp.permission_code,
+		sp.permission_method,
+		sp.permission_icon,
+		sp.parent_module_id
+
+		from sys_permission sp
+		
+		where sp.parent_module_id in (
+			select srm.module_id 
+			from sys_role_module srm, sys_role sr,sys_user_role sur
+			where srm.role_id = sr.role_id
+			and sr.role_id = sur.role_id
+			and sur.user_id = #{userId}
+			group by srm.module_id
+		)
+	</select>
+
+	<!-- -->
+
+</mapper>
